@@ -21,6 +21,21 @@
 - [x] No LinkedIn authentication
 - [x] No Telegram mobile architecture
 
+## Build #1 — Main app navigation and core layout — completed
+
+- [x] Production main Expo Router group
+- [x] Bottom navigation: Home / Signals / Markets / News / More
+- [x] NativeWind-styled tab bar
+- [x] Main Home screen shell
+- [x] Signals screen shell
+- [x] Horizontal signal category navigation foundation
+- [x] Markets screen shell
+- [x] Market News screen shell
+- [x] More screen shell with 7 requested destinations
+- [x] Notifications route foundation
+- [x] Successful login routes into the main app
+- [x] BUY-only signal messaging in the main app shell
+
 ## Signal categories
 
 - [x] Retail
@@ -32,18 +47,18 @@
 
 ## Frontend still to build
 
-- [ ] Production authenticated app shell and main navigation
 - [ ] 14-day trial and $50/month subscription UI
-- [ ] Signals screens and horizontal signal navigation
+- [ ] Complete Signals screens and functional horizontal category navigation
+- [ ] Signal detail pages
 - [ ] Markets screens and stock charts
 - [ ] News screens
 - [ ] Sentiment screens
-- [ ] More screens
+- [ ] Complete More screens
 - [ ] Community features
 - [ ] Portfolio Register
 - [ ] Sticks AI
 - [ ] AI Troubleshoot
-- [ ] Notifications UI
+- [ ] Complete Notifications UI
 - [ ] Profile and settings
 - [ ] Customer support UI
 - [ ] Legal pages
