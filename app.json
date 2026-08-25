@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "STOCKASTICS",
+    "slug": "stockastics",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "stockastics",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-notifications"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "com.stockastics.app"
+    },
+    "ios": {
+      "bundleIdentifier": "com.stockastics.app"
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
