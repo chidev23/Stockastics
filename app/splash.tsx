@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
+import { Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SplashScreen() {
   useEffect(() => {
@@ -9,15 +10,14 @@ export default function SplashScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.logo}>STOCKASTICS</Text>
-      <Text style={styles.tagline}>Intelligent stock market signals</Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 items-center justify-center px-6">
+        <View className="h-24 w-24 items-center justify-center rounded-[28px] bg-stockastics-blue">
+          <Text className="text-4xl font-black text-white">S</Text>
+        </View>
+        <Text className="mt-6 text-3xl font-black tracking-[2px] text-stockastics-blue">STOCKASTICS</Text>
+        <Text className="mt-2 text-center text-sm text-stockastics-muted">Intelligent stock market signals</Text>
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF' },
-  logo: { fontSize: 32, fontWeight: '800', letterSpacing: 1.5, color: '#1266F1' },
-  tagline: { marginTop: 10, fontSize: 14, color: '#4B5563' },
-});
