@@ -1,34 +1,61 @@
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { ScrollView, Text, View, Pressable } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const categories = [
-  ['Retail', 'retail'],
-  ['IPO', 'ipo'],
-  ['Buyback', 'buyback'],
-  ['Sentiment', 'sentiment'],
-  ['Ex-Div', 'ex-dividend'],
-  ['Income', 'income'],
-] as const;
+  { label: 'Retail', route: '/retail-signals', icon: 'storefront-outline' as const },
+  { label: 'IPO', route: '/ipo-signals', icon: 'rocket-outline' as const },
+  { label: 'Buyback', route: '/buyback-signals', icon: 'repeat-outline' as const },
+  { label: 'Sentiment', route: '/sentiment-signals', icon: 'people-outline' as const },
+  { label: 'Ex-Div', route: '/ex-dividend-signals', icon: 'cash-outline' as const },
+  { label: 'Income', route: '/income-signals', icon: 'wallet-outline' as const },
+];
 
 export default function SignalsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
       <View className="px-5 pt-4">
         <Text className="text-2xl font-extrabold text-slate-900">Signals</Text>
-        <Text className="mt-1 text-sm text-slate-500">BUY opportunities from our market intelligence.</Text>
+        <Text className="mt-1 text-sm text-slate-500">Select a signal category to explore market opportunities.</Text>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-5 max-h-14" contentContainerClassName="px-5 gap-2">
-        {categories.map(([label, route], index) => (
-          <Pressable key={route} onPress={() => index === 0 ? undefined : undefined} className={`rounded-full px-4 py-3 ${index === 0 ? 'bg-blue-700' : 'bg-white border border-slate-200'}`}>
-            <Text className={`text-xs font-bold ${index === 0 ? 'text-white' : 'text-slate-700'}`}>{label}</Text>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-5 max-h-20" contentContainerClassName="gap-2 px-5">
+        {categories.map((item, index) => (
+          <Pressable
+            key={item.route}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.label} signals`}
+            onPress={() => router.push(item.route as never)}
+            className={`min-w-[88px] items-center rounded-2xl px-3 py-3 ${index === 0 ? 'bg-blue-700' : 'border border-slate-200 bg-white'}`}
+          >
+            <Ionicons name={item.icon} size={20} color={index === 0 ? '#FFFFFF' : '#1E3A8A'} />
+            <Text className={`mt-1 text-xs font-bold ${index === 0 ? 'text-white' : 'text-slate-700'}`}>{item.label}</Text>
           </Pressable>
         ))}
       </ScrollView>
-      <ScrollView contentContainerClassName="px-5 pb-8 pt-5">
-        <View className="rounded-2xl bg-white p-5">
-          <Text className="font-bold text-emerald-600">Retail BUY Signals</Text>
-          <Text className="mt-2 leading-5 text-slate-500">Live retail signals will appear here. No SELL signals are generated or displayed by STOCKASTICS.</Text>
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-5 pb-8 pt-5">
+        <View className="mb-5 flex-row items-center justify-between">
+          <View>
+            <Text className="text-lg font-extrabold text-slate-900">Retail Signals</Text>
+            <Text className="mt-1 text-sm text-slate-500">Current BUY opportunities</Text>
+          </View>
+          <View className="rounded-full bg-emerald-50 px-3 py-2"><Text className="text-xs font-extrabold text-emerald-600">BUY ONLY</Text></View>
+        </View>
+
+        <Pressable onPress={() => router.push('/retail-signals' as never)} className="rounded-2xl bg-white p-5 active:bg-slate-100">
+          <View className="flex-row items-center justify-between">
+            <View className="h-11 w-11 items-center justify-center rounded-xl bg-emerald-50"><Ionicons name="trending-up" size={22} color="#059669" /></View>
+            <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
+          </View>
+          <Text className="mt-4 text-lg font-extrabold text-slate-900">View Retail BUY Signals</Text>
+          <Text className="mt-1 leading-5 text-slate-500">Open the retail signal feed to see available BUY opportunities and their market details.</Text>
+        </Pressable>
+
+        <View className="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+          <View className="flex-row items-center"><Ionicons name="shield-checkmark-outline" size={20} color="#1E3A8A" /><Text className="ml-2 font-bold text-slate-800">Independent strategies</Text></View>
+          <Text className="mt-2 text-sm leading-5 text-slate-500">Each strategy operates independently. A signal is shown only when its strategy generates a valid BUY decision under the signal engine rules.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
