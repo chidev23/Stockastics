@@ -6,17 +6,9 @@
     "orientation": "portrait",
     "scheme": "stockastics",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "plugins": ["expo-router", "expo-notifications"],
     "experiments": {"typedRoutes": true},
-    "icon": "./assets/icon.png",
-    "android": {
-      "package": "com.stochastics.mobile",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
+    "android": {"package": "com.stochastics.mobile"},
     "ios": {"bundleIdentifier": "com.stochastics.mobile"},
     "web": {"bundler": "metro"}
   }
