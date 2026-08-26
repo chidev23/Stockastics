@@ -9,7 +9,14 @@
     "newArchEnabled": true,
     "plugins": ["expo-router", "expo-notifications"],
     "experiments": {"typedRoutes": true},
-    "android": {"package": "com.stochastics.mobile"},
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.stochastics.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
     "ios": {"bundleIdentifier": "com.stochastics.mobile"},
     "web": {"bundler": "metro"}
   }
