@@ -10,7 +10,7 @@ jobs:
   build-android:
     name: Build STOCKASTICS APK
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,12 +19,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm install
 
+      - name: Sync Expo dependencies
+        run: npx expo install --check
+
       - name: Run Expo Doctor
         run: npx expo-doctor
+
+      - name: Verify resolved Worklets version
+        run: npm ls react-native-worklets --depth=0
 
       - name: Setup Expo/EAS CLI
         run: npm install --global eas-cli@latest
