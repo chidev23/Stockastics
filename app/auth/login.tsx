@@ -2,7 +2,6 @@ import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { loginWithEmail } from '../../src/services/firebase/auth';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -18,6 +17,7 @@ export default function LoginScreen() {
     }
     try {
       setBusy(true);
+      const { loginWithEmail } = await import('../../src/services/firebase/auth');
       await loginWithEmail(email, password);
       router.replace('/(main)');
     } catch (e) {
