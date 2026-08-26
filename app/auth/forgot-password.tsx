@@ -2,7 +2,6 @@ import { Link } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { sendResetEmail } from '../../src/services/firebase/auth';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -15,6 +14,7 @@ export default function ForgotPasswordScreen() {
     if (!email.trim()) { setError('Enter your email address.'); return; }
     try {
       setBusy(true);
+      const { sendResetEmail } = await import('../../src/services/firebase/auth');
       await sendResetEmail(email);
       setMessage('Password reset instructions have been sent to your email.');
     } catch (e) {
