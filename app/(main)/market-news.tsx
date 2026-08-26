@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Alert, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CATEGORIES = ['All', 'Markets', 'Stocks', 'Economy', 'Dividends', 'IPO'];
@@ -12,9 +13,9 @@ const NEWS = [
 ];
 
 export default function MarketNewsScreen() {
-  const [category, setCategory] = React.useState('All');
-  const [query, setQuery] = React.useState('');
-  const filtered = NEWS.filter(n => (category === 'All' || n.category === category) && `${n.title} ${n.ticker}`.toLowerCase().includes(query.toLowerCase()));
+  const [category, setCategory] = useState('All');
+  const [query, setQuery] = useState('');
+  const filtered = useMemo(() => NEWS.filter(n => (category === 'All' || n.category === category) && `${n.title} ${n.ticker}`.toLowerCase().includes(query.toLowerCase())), [category, query]);
   return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
     <View className="border-b border-slate-100 bg-white px-5 pb-4 pt-4"><View className="flex-row items-center justify-between"><View><Text className="text-2xl font-extrabold text-slate-900">Market News</Text><Text className="mt-1 text-sm text-slate-500">Stay informed about the markets</Text></View><Pressable onPress={() => Alert.alert('Refresh','Latest market news will be refreshed from the news service.')} className="h-10 w-10 items-center justify-center rounded-full bg-blue-50"><Ionicons name="refresh" size={20} color="#2563EB" /></Pressable></View><View className="mt-4 flex-row items-center rounded-xl bg-slate-100 px-4"><Ionicons name="search" size={19} color="#64748B" /><TextInput value={query} onChangeText={setQuery} placeholder="Search news or stock ticker" placeholderTextColor="#94A3B8" className="ml-2 flex-1 py-3 text-slate-900" /></View></View>
     <ScrollView horizontal showsHorizontalScrollIndicator={false} className="max-h-16 bg-white" contentContainerClassName="items-center px-5"><View className="flex-row gap-2">{CATEGORIES.map(c => <Pressable key={c} onPress={() => setCategory(c)} className={`rounded-full px-4 py-2 ${category === c ? 'bg-blue-700' : 'bg-slate-100'}`}><Text className={`text-sm font-bold ${category === c ? 'text-white' : 'text-slate-600'}`}>{c}</Text></Pressable>)}</View></ScrollView>
