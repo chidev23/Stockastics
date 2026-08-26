@@ -1,15 +1,15 @@
-import { Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function NewsScreen() {
-  return (
-    <SafeAreaView className="flex-1 bg-slate-50 px-5 pt-4" edges={['top']}>
-      <Text className="text-2xl font-extrabold text-slate-900">Market News</Text>
-      <Text className="mt-1 text-sm text-slate-500">Stay informed with relevant market developments.</Text>
-      <View className="mt-6 rounded-2xl bg-white p-5">
-        <Text className="font-bold text-slate-900">Latest news</Text>
-        <Text className="mt-2 text-slate-500">The live news feed and article details will be added in the News build.</Text>
-      </View>
-    </SafeAreaView>
-  );
-}
+const categories=['Top Stories','Latest','Stocks','Economy','Nigeria','USA','UK','Europe','Asia'];
+const stories=[
+ ['Markets','Global stocks watch central-bank signals as investors assess the next move','Reuters','12 min ago','GLOBAL'],
+ ['Stocks','Technology shares lead the market as investors reassess growth outlook','Market Desk','28 min ago','TECH'],
+ ['Nigeria','Nigerian equities remain in focus as investors track corporate results','Business News','41 min ago','NG'],
+ ['Economy','Investors monitor inflation and employment data for fresh market direction','Economic Desk','1 hr ago','ECONOMY'],
+ ['Stocks','Large-cap companies attract renewed attention across major exchanges','Market Desk','2 hrs ago','US'],
+ ['Energy','Energy shares move into focus as commodity markets react to new data','Market Desk','3 hrs ago','ENERGY'],
+];
+export default function NewsScreen(){return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}><View className="px-5 pt-4"><View className="flex-row items-center justify-between"><View><Text className="text-2xl font-extrabold text-slate-900">Market News</Text><Text className="mt-1 text-sm text-slate-500">Stay informed with relevant market developments.</Text></View><View className="h-10 w-10 items-center justify-center rounded-full bg-white"><Ionicons name="notifications-outline" size={20} color="#0F172A"/></View></View><View className="mt-4 flex-row items-center rounded-2xl bg-white px-4 py-3"><Ionicons name="search" size={19} color="#64748B"/><TextInput placeholder="Search news, stocks or topics" placeholderTextColor="#94A3B8" className="ml-3 flex-1 text-sm text-slate-900"/></View></View><ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 max-h-12" contentContainerClassName="gap-2 px-5">{categories.map((c,i)=><Pressable key={c} className={`rounded-full px-4 py-2 ${i===0?'bg-blue-700':'bg-white border border-slate-200'}`}><Text className={`text-xs font-bold ${i===0?'text-white':'text-slate-700'}`}>{c}</Text></Pressable>)}</ScrollView><ScrollView contentContainerClassName="px-5 pb-10 pt-5"><Text className="mb-3 text-lg font-extrabold text-slate-900">Top Stories</Text>{stories.map((s,i)=><Pressable key={s[1]} onPress={()=>router.push({pathname:'/news-article',params:{title:s[1]}})} className="mb-3 overflow-hidden rounded-2xl border border-slate-200 bg-white"><View className={`h-2 ${['bg-blue-600','bg-emerald-500','bg-red-500','bg-violet-500','bg-amber-500','bg-cyan-500'][i]}`}/><View className="p-4"><View className="flex-row items-center justify-between"><Text className="text-xs font-extrabold uppercase tracking-wider text-blue-700">{s[4]}</Text><Text className="text-xs text-slate-400">{s[3]}</Text></View><Text className="mt-2 text-base font-extrabold leading-6 text-slate-900">{s[1]}</Text><Text className="mt-2 text-xs text-slate-500">{s[2]} · Market News</Text></View></Pressable>)}<View className="mt-2 rounded-2xl bg-blue-50 p-4"><Text className="font-bold text-blue-900">News data</Text><Text className="mt-1 text-sm leading-5 text-blue-800">Live headlines, sources, timestamps, related tickers and summaries will be supplied by the configured production news API.</Text></View></ScrollView></SafeAreaView>}
