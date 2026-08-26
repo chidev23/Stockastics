@@ -14,30 +14,5 @@ const items = [
 ] as const;
 
 export default function MoreScreen() {
-  return (
-    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
-      <View className="border-b border-slate-100 bg-white px-5 py-4">
-        <Text className="text-2xl font-extrabold text-slate-900">MORE</Text>
-      </View>
-      <ScrollView contentContainerClassName="pb-8 pt-2">
-        <View className="overflow-hidden bg-white">
-          {items.map(([label, icon, route], index) => (
-            <Pressable
-              key={label}
-              accessibilityRole="button"
-              accessibilityLabel={label}
-              onPress={() => router.push(route as never)}
-              className={`flex-row items-center px-5 py-5 active:bg-slate-50 ${index ? 'border-t border-slate-100' : ''}`}
-            >
-              <View className="h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
-                <Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={20} color="#2563EB" />
-              </View>
-              <Text className="ml-4 flex-1 font-semibold text-slate-800">{label}</Text>
-              <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
-            </Pressable>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+  return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}><View className="border-b border-slate-100 bg-white px-5 py-4"><Text className="text-2xl font-extrabold text-slate-900">MORE</Text></View><ScrollView contentContainerClassName="pb-8 pt-2"><View className="overflow-hidden rounded-2xl bg-white"><Text className="px-5 pb-2 pt-5 text-xs font-bold uppercase tracking-wider text-slate-400">Tools & Community</Text>{items.map(([label,icon,route],index)=><Pressable key={label} accessibilityRole="button" accessibilityLabel={label} onPress={()=>router.push(route as never)} className={`flex-row items-center px-5 py-4 active:bg-slate-50 ${index?'border-t border-slate-100':''}`}><View className="h-10 w-10 items-center justify-center rounded-xl bg-blue-50"><Ionicons name={icon as keyof typeof Ionicons.glyphMap} size={20} color="#2563EB"/></View><Text className="ml-4 flex-1 font-semibold text-slate-800">{label}</Text><Ionicons name="chevron-forward" size={20} color="#94A3B8"/></Pressable>)}</View></ScrollView></SafeAreaView>;
 }
