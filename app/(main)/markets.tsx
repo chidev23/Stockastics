@@ -1,15 +1,8 @@
-import { Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function MarketsScreen() {
-  return (
-    <SafeAreaView className="flex-1 bg-slate-50 px-5 pt-4" edges={['top']}>
-      <Text className="text-2xl font-extrabold text-slate-900">Markets</Text>
-      <Text className="mt-1 text-sm text-slate-500">Explore stocks by country and market.</Text>
-      <View className="mt-6 rounded-2xl bg-white p-5">
-        <Text className="font-bold text-slate-900">Market data</Text>
-        <Text className="mt-2 text-slate-500">Stock discovery, country filters, price movement and detailed charts will be added in the Markets build.</Text>
-      </View>
-    </SafeAreaView>
-  );
-}
+const countries=['All','USA','Nigeria','UK','Canada','Germany','Japan'];
+const stocks=[['META','Meta Platforms, Inc.','$450.00','+2.84%','USA'],['AMZN','Amazon.com, Inc.','$225.40','+1.62%','USA'],['AAPL','Apple Inc.','$198.22','-0.48%','USA'],['NVDA','NVIDIA Corporation','$128.74','+3.21%','USA'],['SEPLAT','Seplat Energy','₦5,820','+1.14%','Nigeria'],['GTCO','Guaranty Trust Holding','₦68.40','-0.72%','Nigeria'],['TSLA','Tesla, Inc.','$342.10','+4.08%','USA'],['MSFT','Microsoft Corporation','$512.30','+0.91%','USA']];
+export default function MarketsScreen(){const open=(s:string[])=>router.push({pathname:'/stock-market-view',params:{ticker:s[0],company:s[1],price:s[2].replace(/[$₦]/g,''),change:s[3],country:s[4],exchange:s[4]==='Nigeria'?'NGX':'NASDAQ'}});return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}><View className="px-5 pt-4"><Text className="text-2xl font-extrabold text-slate-900">Markets</Text><Text className="mt-1 text-sm text-slate-500">Explore stocks and real-time market data.</Text><View className="mt-4 flex-row items-center rounded-2xl border border-slate-200 bg-white px-4"><Ionicons name="search-outline" size={20} color="#64748B"/><TextInput placeholder="Search company or ticker" placeholderTextColor="#94A3B8" className="ml-2 h-12 flex-1 text-slate-900"/></View></View><ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-4 max-h-12" contentContainerClassName="gap-2 px-5">{countries.map((c,i)=><Pressable key={c} className={`rounded-full px-4 py-2.5 ${i===0?'bg-blue-700':'bg-white border border-slate-200'}`}><Text className={`text-xs font-bold ${i===0?'text-white':'text-slate-700'}`}>{c}</Text></Pressable>)}</ScrollView><ScrollView contentContainerClassName="px-5 pb-10 pt-5"><View className="mb-4 flex-row items-center justify-between"><Text className="text-lg font-extrabold text-slate-900">Stocks</Text><Text className="text-xs font-semibold text-slate-500">Market data</Text></View>{stocks.map(s=><Pressable key={s[0]} onPress={()=>open(s)} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4 active:opacity-80"><View className="flex-row items-center justify-between"><View className="flex-1"><Text className="text-base font-extrabold text-slate-900">{s[0]}</Text><Text className="mt-1 text-xs text-slate-500">{s[1]} · {s[4]}</Text></View><View className="items-end"><Text className="font-extrabold text-slate-900">{s[2]}</Text><Text className={`mt-1 text-xs font-bold ${s[3].startsWith('+')?'text-emerald-600':'text-red-600'}`}>{s[3]}</Text></View><Ionicons name="chevron-forward" size={18} color="#94A3B8" className="ml-2"/></View></Pressable>)}<View className="mt-2 rounded-2xl bg-blue-50 p-4"><Text className="text-xs leading-5 text-blue-900">Market prices, volume and other statistics are supplied by the configured market-data provider. Availability and delays depend on the provider.</Text></View></ScrollView></SafeAreaView>}
