@@ -1,57 +1,77 @@
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
-import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BLUE = '#2563EB';
 
 export default function RegisterScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-
-  async function handleRegister() {
-    setError('');
-    if (!name.trim() || !email.trim() || password.length < 8) {
-      setError('Enter your name, a valid email, and a password of at least 8 characters.');
-      return;
-    }
-    try {
-      setBusy(true);
-      const { registerWithEmail } = await import('../../src/services/firebase/auth');
-      await registerWithEmail(email, password, name);
-      router.replace('/auth/verify-email');
-    } catch (e) {
-      setError(e instanceof Error ? e.message.replace('Firebase: ', '') : 'Unable to create account.');
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  function handleGoogleSignup() {
-    setError('Google sign-up will be enabled when Firebase is connected.');
-  }
-
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 justify-center px-6">
-        <Text className="text-3xl font-extrabold text-stockastics-ink">Create account</Text>
-        <Text className="mt-2 text-base text-stockastics-muted">Create your STOCKASTICS account.</Text>
-        <View className="mt-8 gap-4">
-          <TextInput value={name} onChangeText={setName} placeholder="Full name" placeholderTextColor="#94A3B8" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
-          <TextInput value={email} onChangeText={setEmail} placeholder="Email address" placeholderTextColor="#94A3B8" autoCapitalize="none" keyboardType="email-address" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
-          <TextInput value={password} onChangeText={setPassword} placeholder="Password" placeholderTextColor="#94A3B8" secureTextEntry className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
+      <View className="flex-1 px-6">
+        <View className="flex-1 justify-center">
+          <View className="mx-auto w-full max-w-[520px]">
+            <View className="items-center">
+              <View className="h-16 w-16 items-center justify-center rounded-2xl bg-blue-50">
+                <Text className="text-3xl font-extrabold" style={{ color: BLUE }}>S</Text>
+              </View>
+              <Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Create account</Text>
+              <Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text>
+            </View>
+
+            <Pressable className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-slate-100 active:opacity-70">
+              <Text className="mr-3 text-xl font-bold" style={{ color: '#4285F4' }}>G</Text>
+              <Text className="text-base font-semibold text-slate-800">Sign up with Google</Text>
+            </Pressable>
+
+            <View className="my-6 flex-row items-center">
+              <View className="h-px flex-1 bg-slate-200" />
+              <Text className="mx-4 text-base font-medium text-slate-500">or</Text>
+              <View className="h-px flex-1 bg-slate-200" />
+            </View>
+
+            <View className="gap-4">
+              <TextInput
+                placeholder="Full name"
+                placeholderTextColor="#A1A1AA"
+                autoComplete="name"
+                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
+              />
+              <TextInput
+                placeholder="Email address"
+                placeholderTextColor="#A1A1AA"
+                autoCapitalize="none"
+                autoComplete="email"
+                keyboardType="email-address"
+                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
+              />
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="#A1A1AA"
+                secureTextEntry
+                autoComplete="new-password"
+                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
+              />
+            </View>
+
+            <Pressable className="mt-5 h-14 items-center justify-center rounded-xl bg-stockastics-blue active:opacity-80">
+              <Text className="text-base font-bold text-white">Create account</Text>
+            </Pressable>
+
+            <View className="mt-6 items-center">
+              <View className="flex-row items-center">
+                <Text className="text-base text-slate-800">Already have an account? </Text>
+                <Link href="/auth/login" className="text-base font-semibold" style={{ color: BLUE }}>Log in</Link>
+              </View>
+            </View>
+
+            <View className="mt-16 flex-row items-center justify-center">
+              <Link href="/legal/privacy" className="text-sm font-semibold" style={{ color: BLUE }}>Privacy Policy</Link>
+              <Text className="mx-5 text-slate-300">|</Text>
+              <Link href="/legal/terms" className="text-sm font-semibold" style={{ color: BLUE }}>Terms & Conditions</Link>
+            </View>
+            <Text className="mt-4 text-center text-sm text-slate-400">© {new Date().getFullYear()} STOCKASTICS. All rights reserved.</Text>
+          </View>
         </View>
-        {!!error && <Text className="mt-3 text-center text-sm text-stockastics-red">{error}</Text>}
-        <Pressable onPress={handleRegister} disabled={busy} className="mt-5 items-center rounded-2xl bg-stockastics-blue py-4 active:opacity-80">
-          {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text className="text-base font-bold text-white">Create account</Text>}
-        </Pressable>
-        <Pressable onPress={handleGoogleSignup} className="mt-3 items-center rounded-2xl border border-slate-200 bg-white py-4 active:opacity-70">
-          <Text className="text-base font-bold text-stockastics-ink">Continue with Google</Text>
-        </Pressable>
-        <Link href="/auth/login" className="mt-5 text-center font-semibold" style={{ color: BLUE }}>Already have an account? Sign in</Link>
       </View>
     </SafeAreaView>
   );
