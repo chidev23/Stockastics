@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const BLUE = '#2563EB';
+
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,6 +29,10 @@ export default function LoginScreen() {
     }
   }
 
+  function handleGoogleLogin() {
+    setError('Google sign-in will be enabled when Firebase is connected.');
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 justify-center px-6">
@@ -36,12 +42,15 @@ export default function LoginScreen() {
           <TextInput value={email} onChangeText={setEmail} placeholder="Email address" placeholderTextColor="#94A3B8" autoCapitalize="none" autoComplete="email" keyboardType="email-address" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base text-stockastics-ink" />
           <TextInput value={password} onChangeText={setPassword} placeholder="Password" placeholderTextColor="#94A3B8" secureTextEntry autoComplete="password" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base text-stockastics-ink" />
         </View>
-        {!!error && <Text className="mt-3 text-sm text-stockastics-red">{error}</Text>}
+        {!!error && <Text className="mt-3 text-center text-sm text-stockastics-red">{error}</Text>}
         <Pressable onPress={handleLogin} disabled={busy} className="mt-5 items-center rounded-2xl bg-stockastics-blue py-4 active:opacity-80">
           {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text className="text-base font-bold text-white">Sign In</Text>}
         </Pressable>
-        <Link href="/auth/forgot-password" className="mt-5 text-center font-semibold text-stockastics-blue">Forgot password?</Link>
-        <Link href="/auth/register" className="mt-4 text-center font-semibold text-stockastics-green">Create an account</Link>
+        <Pressable onPress={handleGoogleLogin} className="mt-3 items-center rounded-2xl border border-slate-200 bg-white py-4 active:opacity-70">
+          <Text className="text-base font-bold text-stockastics-ink">Continue with Google</Text>
+        </Pressable>
+        <Link href="/auth/forgot-password" className="mt-5 text-center font-semibold" style={{ color: BLUE }}>Forgot password?</Link>
+        <Link href="/auth/register" className="mt-3 text-center font-semibold" style={{ color: BLUE }}>Create an account</Link>
       </View>
     </SafeAreaView>
   );
