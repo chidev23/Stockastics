@@ -1,56 +1,72 @@
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
-import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
+import { Link } from 'expo-router';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BLUE = '#2563EB';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-
-  async function handleLogin() {
-    setError('');
-    if (!email.trim() || !password) {
-      setError('Enter your email and password.');
-      return;
-    }
-    try {
-      setBusy(true);
-      const { loginWithEmail } = await import('../../src/services/firebase/auth');
-      await loginWithEmail(email, password);
-      router.replace('/(main)');
-    } catch (e) {
-      setError(e instanceof Error ? e.message.replace('Firebase: ', '') : 'Unable to sign in.');
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  function handleGoogleLogin() {
-    setError('Google sign-in will be enabled when Firebase is connected.');
-  }
-
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 justify-center px-6">
-        <Text className="text-3xl font-extrabold tracking-tight text-stockastics-ink">Welcome back</Text>
-        <Text className="mt-2 text-base text-stockastics-muted">Sign in to access STOCKASTICS BUY signals.</Text>
-        <View className="mt-8 gap-4">
-          <TextInput value={email} onChangeText={setEmail} placeholder="Email address" placeholderTextColor="#94A3B8" autoCapitalize="none" autoComplete="email" keyboardType="email-address" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base text-stockastics-ink" />
-          <TextInput value={password} onChangeText={setPassword} placeholder="Password" placeholderTextColor="#94A3B8" secureTextEntry autoComplete="password" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base text-stockastics-ink" />
+      <View className="flex-1 px-6">
+        <View className="flex-1 justify-center">
+          <View className="mx-auto w-full max-w-[520px]">
+            <View className="items-center">
+              <View className="h-16 w-16 items-center justify-center rounded-2xl bg-blue-50">
+                <Text className="text-3xl font-extrabold" style={{ color: BLUE }}>S</Text>
+              </View>
+              <Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Welcome back</Text>
+              <Text className="mt-2 text-center text-base text-slate-500">Sign in to your STOCKASTICS account</Text>
+            </View>
+
+            <Pressable className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-slate-100 active:opacity-70">
+              <Text className="mr-3 text-xl font-bold" style={{ color: '#4285F4' }}>G</Text>
+              <Text className="text-base font-semibold text-slate-800">Log in with Google</Text>
+            </Pressable>
+
+            <View className="my-6 flex-row items-center">
+              <View className="h-px flex-1 bg-slate-200" />
+              <Text className="mx-4 text-base font-medium text-slate-500">or</Text>
+              <View className="h-px flex-1 bg-slate-200" />
+            </View>
+
+            <View className="gap-4">
+              <TextInput
+                placeholder="Email address"
+                placeholderTextColor="#A1A1AA"
+                autoCapitalize="none"
+                autoComplete="email"
+                keyboardType="email-address"
+                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
+              />
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="#A1A1AA"
+                secureTextEntry
+                autoComplete="password"
+                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
+              />
+            </View>
+
+            <Pressable className="mt-5 h-14 items-center justify-center rounded-xl bg-stockastics-blue active:opacity-80">
+              <Text className="text-base font-bold text-white">Log in</Text>
+            </Pressable>
+
+            <View className="mt-6 items-center">
+              <Link href="/auth/forgot-password" className="text-base font-semibold" style={{ color: BLUE }}>I forgot my password.</Link>
+              <View className="mt-2 flex-row items-center">
+                <Text className="text-base text-slate-800">New user? </Text>
+                <Link href="/auth/register" className="text-base font-semibold" style={{ color: BLUE }}>Create account</Link>
+              </View>
+            </View>
+
+            <View className="mt-16 flex-row items-center justify-center">
+              <Link href="/legal/privacy" className="text-sm font-semibold" style={{ color: BLUE }}>Privacy Policy</Link>
+              <Text className="mx-5 text-slate-300">|</Text>
+              <Link href="/legal/terms" className="text-sm font-semibold" style={{ color: BLUE }}>Terms & Conditions</Link>
+            </View>
+            <Text className="mt-4 text-center text-sm text-slate-400">© {new Date().getFullYear()} STOCKASTICS. All rights reserved.</Text>
+          </View>
         </View>
-        {!!error && <Text className="mt-3 text-center text-sm text-stockastics-red">{error}</Text>}
-        <Pressable onPress={handleLogin} disabled={busy} className="mt-5 items-center rounded-2xl bg-stockastics-blue py-4 active:opacity-80">
-          {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text className="text-base font-bold text-white">Sign In</Text>}
-        </Pressable>
-        <Pressable onPress={handleGoogleLogin} className="mt-3 items-center rounded-2xl border border-slate-200 bg-white py-4 active:opacity-70">
-          <Text className="text-base font-bold text-stockastics-ink">Continue with Google</Text>
-        </Pressable>
-        <Link href="/auth/forgot-password" className="mt-5 text-center font-semibold" style={{ color: BLUE }}>Forgot password?</Link>
-        <Link href="/auth/register" className="mt-3 text-center font-semibold" style={{ color: BLUE }}>Create an account</Link>
       </View>
     </SafeAreaView>
   );
