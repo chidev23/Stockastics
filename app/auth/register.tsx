@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const BLUE = '#2563EB';
+
 export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,21 +30,28 @@ export default function RegisterScreen() {
     }
   }
 
+  function handleGoogleSignup() {
+    setError('Google sign-up will be enabled when Firebase is connected.');
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 justify-center px-6">
         <Text className="text-3xl font-extrabold text-stockastics-ink">Create account</Text>
-        <Text className="mt-2 text-base text-stockastics-muted">Start your 14-day STOCKASTICS free trial.</Text>
+        <Text className="mt-2 text-base text-stockastics-muted">Create your STOCKASTICS account.</Text>
         <View className="mt-8 gap-4">
           <TextInput value={name} onChangeText={setName} placeholder="Full name" placeholderTextColor="#94A3B8" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
           <TextInput value={email} onChangeText={setEmail} placeholder="Email address" placeholderTextColor="#94A3B8" autoCapitalize="none" keyboardType="email-address" className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
           <TextInput value={password} onChangeText={setPassword} placeholder="Password" placeholderTextColor="#94A3B8" secureTextEntry className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-base" />
         </View>
-        {!!error && <Text className="mt-3 text-sm text-stockastics-red">{error}</Text>}
-        <Pressable onPress={handleRegister} disabled={busy} className="mt-5 items-center rounded-2xl bg-stockastics-green py-4 active:opacity-80">
-          {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text className="font-bold text-white">Create account</Text>}
+        {!!error && <Text className="mt-3 text-center text-sm text-stockastics-red">{error}</Text>}
+        <Pressable onPress={handleRegister} disabled={busy} className="mt-5 items-center rounded-2xl bg-stockastics-blue py-4 active:opacity-80">
+          {busy ? <ActivityIndicator color="#FFFFFF" /> : <Text className="text-base font-bold text-white">Create account</Text>}
         </Pressable>
-        <Link href="/auth/login" className="mt-5 text-center font-semibold text-stockastics-blue">Already have an account? Sign in</Link>
+        <Pressable onPress={handleGoogleSignup} className="mt-3 items-center rounded-2xl border border-slate-200 bg-white py-4 active:opacity-70">
+          <Text className="text-base font-bold text-stockastics-ink">Continue with Google</Text>
+        </Pressable>
+        <Link href="/auth/login" className="mt-5 text-center font-semibold" style={{ color: BLUE }}>Already have an account? Sign in</Link>
       </View>
     </SafeAreaView>
   );
