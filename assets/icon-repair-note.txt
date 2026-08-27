@@ -1,0 +1,1 @@
+The previous icon asset is corrupted. Replace it with a valid PNG before enabling Expo icon configuration.
