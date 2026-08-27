@@ -8,7 +8,14 @@
     "userInterfaceStyle": "light",
     "plugins": ["expo-router", "expo-notifications"],
     "experiments": {"typedRoutes": true},
-    "android": {"package": "com.stochastics.mobile"},
+    "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.stochastics.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#08183E"
+      }
+    },
     "ios": {"bundleIdentifier": "com.stochastics.mobile"},
     "web": {"bundler": "metro"}
   }
