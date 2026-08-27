@@ -1,10 +1,22 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BLUE = '#2563EB';
 
 export default function RegisterScreen() {
+  const handleRegister = () => {
+    // Authentication is intentionally disabled during the frontend test phase.
+    // Continue to the app so the registration flow can be tested without Firebase.
+    router.replace('/(main)');
+  };
+
+  const handleGoogleSignup = () => {
+    // Google/Firebase authentication will be connected later.
+    router.replace('/(main)');
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 px-6">
@@ -18,9 +30,9 @@ export default function RegisterScreen() {
               <Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text>
             </View>
 
-            <Pressable className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-slate-100 active:opacity-70">
-              <Text className="mr-3 text-xl font-bold" style={{ color: '#4285F4' }}>G</Text>
-              <Text className="text-base font-semibold text-slate-800">Sign up with Google</Text>
+            <Pressable onPress={handleGoogleSignup} className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-slate-100 active:opacity-70">
+              <MaterialCommunityIcons name="google" size={23} color="#4285F4" />
+              <Text className="ml-3 text-base font-semibold text-slate-800">Sign up with Google</Text>
             </Pressable>
 
             <View className="my-6 flex-row items-center">
@@ -30,30 +42,12 @@ export default function RegisterScreen() {
             </View>
 
             <View className="gap-4">
-              <TextInput
-                placeholder="Full name"
-                placeholderTextColor="#A1A1AA"
-                autoComplete="name"
-                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
-              />
-              <TextInput
-                placeholder="Email address"
-                placeholderTextColor="#A1A1AA"
-                autoCapitalize="none"
-                autoComplete="email"
-                keyboardType="email-address"
-                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#A1A1AA"
-                secureTextEntry
-                autoComplete="new-password"
-                className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900"
-              />
+              <TextInput placeholder="Full name" placeholderTextColor="#A1A1AA" autoComplete="name" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" />
+              <TextInput placeholder="Email address" placeholderTextColor="#A1A1AA" autoCapitalize="none" autoComplete="email" keyboardType="email-address" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" />
+              <TextInput placeholder="Password" placeholderTextColor="#A1A1AA" secureTextEntry autoComplete="new-password" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" />
             </View>
 
-            <Pressable className="mt-5 h-14 items-center justify-center rounded-xl bg-stockastics-blue active:opacity-80">
+            <Pressable onPress={handleRegister} className="mt-5 h-14 items-center justify-center rounded-xl bg-stockastics-blue active:opacity-80">
               <Text className="text-base font-bold text-white">Create account</Text>
             </Pressable>
 
