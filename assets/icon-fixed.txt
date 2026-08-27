@@ -1,0 +1,1 @@
+STOCKASTICS icon binary replacement is handled through Git data API.
