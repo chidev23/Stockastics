@@ -1,0 +1,1 @@
+Use Git data API for binary PNG replacement.
