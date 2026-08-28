@@ -12,7 +12,25 @@ export type TestSubscription = {
   subscriptionEndsAt?: number;
 };
 
+/**
+ * Testing-only sign-in/session creation.
+ * A brand-new account receives its 14-day trial automatically.
+ * Existing sessions are preserved so signing in again cannot reset the trial clock.
+ */
 export async function setTestSession(): Promise<void> {
+  const existingRaw = await AsyncStorage.getItem(SESSION_KEY);
+
+  if (existingRaw) {
+    try {
+      const existing = JSON.parse(existingRaw) as TestSubscription;
+      if (existing.authenticated && existing.createdAt && existing.trialEndsAt) {
+        return;
+      }
+    } catch {
+      // Replace an invalid/corrupt testing session below.
+    }
+  }
+
   const createdAt = Date.now();
   const session: TestSubscription = {
     authenticated: true,
