@@ -46,10 +46,19 @@ export async function getTestSubscription(): Promise<TestSubscription | null> {
 export async function hasActiveSignalAccess(): Promise<boolean> {
   const session = await getTestSubscription();
   if (!session?.authenticated) return false;
-  if (session.plan === 'monthly' && session.subscriptionEndsAt) {
-    return Date.now() < session.subscriptionEndsAt;
+  if (session.plan === 'monthly') {
+    return !!session.subscriptionEndsAt && Date.now() < session.subscriptionEndsAt;
   }
   return Date.now() < session.trialEndsAt;
+}
+
+/** Testing-only renewal. Production billing will replace this with the subscription backend. */
+export async function activateTestMonthlySubscription(): Promise<void> {
+  const session = await getTestSubscription();
+  if (!session) return;
+  session.plan = 'monthly';
+  session.subscriptionEndsAt = Date.now() + 30 * DAY_MS;
+  await AsyncStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
 export async function clearTestSession(): Promise<void> {
