@@ -23,15 +23,15 @@ export default function SideMenu({ visible, onClose }: SideMenuProps) {
   };
 
   return (
-    <View className="absolute inset-0 z-50 flex-row">
-      {/* Drawer is first so it is physically anchored to the LEFT. */}
+    <View className="absolute left-0 right-0 top-0 bottom-0 z-50 flex-row">
+      {/* LEFT drawer: fixed to the physical left edge of the app. */}
       <View className="h-full w-[82%] max-w-[340px] bg-white px-5 pb-8 pt-14 shadow-2xl">
         <View className="mb-8 flex-row items-center justify-between">
           <View>
             <Text className="text-xs font-extrabold uppercase tracking-[2px] text-emerald-600">STOCKASTICS</Text>
             <Text className="mt-1 text-xl font-extrabold text-slate-900">Menu</Text>
           </View>
-          <Pressable accessibilityLabel="Close menu" onPress={onClose} className="h-10 w-10 items-center justify-center rounded-full bg-slate-100">
+          <Pressable accessibilityRole="button" accessibilityLabel="Close menu" onPress={onClose} className="h-10 w-10 items-center justify-center rounded-full bg-slate-100 active:bg-slate-200">
             <Ionicons name="close" size={22} color="#0f172a" />
           </Pressable>
         </View>
@@ -58,8 +58,8 @@ export default function SideMenu({ visible, onClose }: SideMenuProps) {
         </View>
       </View>
 
-      {/* Scrim occupies the remaining right side. */}
-      <Pressable accessibilityLabel="Close menu" className="flex-1 bg-black/40" onPress={onClose} />
+      {/* Remaining area is only the dismissible backdrop. */}
+      <Pressable accessibilityRole="button" accessibilityLabel="Close menu" className="flex-1 bg-black/40" onPress={onClose} />
     </View>
   );
 }
