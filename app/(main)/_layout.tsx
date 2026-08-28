@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
   index: 'home-outline',
@@ -10,22 +11,31 @@ const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
   more: 'menu-outline',
 };
 
-export default function MainLayout() {
+function MainTabs() {
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 6 : 0);
+  const baseHeight = Platform.OS === 'ios' ? 58 : 58;
+
   return (
     <Tabs
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: '#2563EB',
+        tabBarActiveTintColor: '#16A34A',
         tabBarInactiveTintColor: '#64748B',
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '700' },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '700', marginTop: -1 },
+        tabBarItemStyle: { paddingTop: 2 },
+        tabBarIconStyle: { marginBottom: -1 },
         tabBarStyle: {
-          height: Platform.OS === 'ios' ? 82 : 64,
-          paddingTop: 6,
-          paddingBottom: Platform.OS === 'ios' ? 18 : 8,
+          height: baseHeight + bottomInset,
+          paddingTop: 5,
+          paddingBottom: bottomInset + 4,
           borderTopWidth: 1,
           borderTopColor: '#E2E8F0',
           backgroundColor: '#FFFFFF',
+          elevation: 8,
+          shadowOpacity: 0.08,
         },
+        tabBarHideOnKeyboard: true,
         tabBarIcon: ({ color, size }) => (
           <Ionicons name={icons[route.name] ?? 'ellipse-outline'} size={size} color={color} />
         ),
@@ -38,4 +48,8 @@ export default function MainLayout() {
       <Tabs.Screen name="more" options={{ title: 'More' }} />
     </Tabs>
   );
+}
+
+export default function MainLayout() {
+  return <MainTabs />;
 }
