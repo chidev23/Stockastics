@@ -29,7 +29,11 @@ jobs:
           test -f assets/icon.jpg
           sudo apt-get update
           sudo apt-get install -y imagemagick
-          magick assets/icon.jpg -strip -define png:color-type=6 assets/icon.png
+          # Ubuntu's imagemagick package currently provides ImageMagick 6,
+          # where the executable is `convert`, not the ImageMagick 7 `magick` wrapper.
+          command -v convert
+          convert assets/icon.jpg -strip -define png:color-type=6 assets/icon.png
+          test -s assets/icon.png
           file assets/icon.png
           identify assets/icon.png
 
