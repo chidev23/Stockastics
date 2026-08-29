@@ -1,3 +1,84 @@
-import { Ionicons } from '@expo/vector-icons'; import { router } from 'expo-router'; import { Pressable, ScrollView, Text, TextInput, View } from 'react-native'; import { SafeAreaView } from 'react-native-safe-area-context';
-const posts=[['John_Doe','5 min ago','Just got a BUY signal on TSLA @ 92%!','12','3'],['Analyst_Kelechi','1 hour ago','Anyone else seeing the Nigeria market turning bullish?','45','18'],['SYSTEM','2 hours ago','BUY signal on AAPL @ 78% confidence','89','24'],['TechTrader','3 hours ago','Anyone watching NVDA? Strong volume today','23','7']];
-export default function CommunityChat(){return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}><View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4"><Pressable onPress={()=>router.back()}><Ionicons name="arrow-back" size={24} color="#0F172A"/></Pressable><Text className="text-xl font-extrabold text-slate-900">Community Chat</Text><Pressable><Ionicons name="search" size={21} color="#0F172A"/></Pressable></View><View className="flex-row gap-2 px-5 py-3"><View className="rounded-full bg-blue-700 px-5 py-2"><Text className="text-xs font-bold text-white">Global</Text></View><View className="rounded-full bg-white px-5 py-2"><Text className="text-xs font-bold text-slate-700">Following</Text></View><View className="rounded-full bg-white px-5 py-2"><Text className="text-xs font-bold text-slate-700">Trending</Text></View></View><ScrollView contentContainerClassName="px-5 pb-24 pt-2">{posts.map(p=><View key={p[0]+p[1]} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4"><View className="flex-row items-center"><View className="h-9 w-9 items-center justify-center rounded-full bg-slate-100"><Ionicons name={p[0]==='SYSTEM'?'megaphone':'person'} size={17} color="#64748B"/></View><Text className="ml-3 font-bold text-slate-900">{p[0]} <Text className="font-normal text-slate-400">· {p[1]}</Text></Text></View><Text className="mt-3 text-sm leading-5 text-slate-700">{p[2]}</Text><View className="mt-3 flex-row"><Text className="text-xs text-slate-500">↻ {p[3]} shares · 💬 {p[4]} replies</Text><Text className="ml-auto text-xs text-slate-500">♡ Like</Text></View></View>)}</ScrollView><View className="absolute bottom-0 left-0 right-0 flex-row items-center border-t border-slate-200 bg-white px-4 py-3"><Pressable className="mr-2"><Ionicons name="attach" size={22} color="#64748B"/></Pressable><TextInput placeholder="Type a message..." className="mr-2 flex-1 rounded-xl bg-slate-100 px-4 py-3"/><Pressable className="rounded-xl bg-blue-700 px-4 py-3"><Text className="font-bold text-white">Send</Text></Pressable></View></SafeAreaView>}
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+
+const posts = [
+  ['John_Doe', '5 min ago', 'Just got a BUY signal on TSLA @ 92%!', '12', '3'],
+  ['Analyst_Kelechi', '1 hour ago', 'Anyone else seeing the Nigeria market turning bullish?', '45', '18'],
+  ['SYSTEM', '2 hours ago', 'BUY signal on AAPL @ 78% confidence', '89', '24'],
+  ['TechTrader', '3 hours ago', 'Anyone watching NVDA? Strong volume today', '23', '7'],
+];
+
+export default function CommunityChat() {
+  const insets = useSafeAreaInsets();
+  const bottomSafePadding = Math.max(insets.bottom, 12);
+
+  return (
+    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
+      <View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
+        <Pressable onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="#0F172A" />
+        </Pressable>
+        <Text className="text-xl font-extrabold text-slate-900">Community Chat</Text>
+        <Pressable>
+          <Ionicons name="search" size={21} color="#0F172A" />
+        </Pressable>
+      </View>
+
+      <View className="flex-row gap-2 px-5 py-3">
+        <View className="rounded-full bg-blue-700 px-5 py-2">
+          <Text className="text-xs font-bold text-white">Global</Text>
+        </View>
+        <View className="rounded-full bg-white px-5 py-2">
+          <Text className="text-xs font-bold text-slate-700">Following</Text>
+        </View>
+        <View className="rounded-full bg-white px-5 py-2">
+          <Text className="text-xs font-bold text-slate-700">Trending</Text>
+        </View>
+      </View>
+
+      <ScrollView
+        className="flex-1"
+        keyboardShouldPersistTaps="handled"
+        contentContainerClassName="px-5 pb-5 pt-2"
+      >
+        {posts.map((p) => (
+          <View key={p[0] + p[1]} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4">
+            <View className="flex-row items-center">
+              <View className="h-9 w-9 items-center justify-center rounded-full bg-slate-100">
+                <Ionicons name={p[0] === 'SYSTEM' ? 'megaphone' : 'person'} size={17} color="#64748B" />
+              </View>
+              <Text className="ml-3 font-bold text-slate-900">
+                {p[0]} <Text className="font-normal text-slate-400">· {p[1]}</Text>
+              </Text>
+            </View>
+            <Text className="mt-3 text-sm leading-5 text-slate-700">{p[2]}</Text>
+            <View className="mt-3 flex-row">
+              <Text className="text-xs text-slate-500">↻ {p[3]} shares · 💬 {p[4]} replies</Text>
+              <Text className="ml-auto text-xs text-slate-500">♡ Like</Text>
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+
+      <View
+        className="flex-row items-center border-t border-slate-200 bg-white px-4 pt-3"
+        style={{ paddingBottom: bottomSafePadding }}
+      >
+        <Pressable className="mr-2 h-11 w-9 items-center justify-center">
+          <Ionicons name="attach" size={22} color="#64748B" />
+        </Pressable>
+        <TextInput
+          placeholder="Type a message..."
+          placeholderTextColor="#94A3B8"
+          returnKeyType="send"
+          className="mr-2 min-h-11 flex-1 rounded-xl bg-slate-100 px-4 py-2 text-base text-slate-900"
+        />
+        <Pressable className="min-h-11 rounded-xl bg-blue-700 px-5 items-center justify-center">
+          <Text className="font-bold text-white">Send</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+}
