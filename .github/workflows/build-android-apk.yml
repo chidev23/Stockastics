@@ -23,6 +23,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Prepare PNG app assets
+        run: |
+          set -e
+          test -f assets/icon.jpg
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          magick assets/icon.jpg -strip -define png:color-type=6 assets/icon.png
+          file assets/icon.png
+          identify assets/icon.png
+
       - name: Install dependencies
         run: npm install
 
