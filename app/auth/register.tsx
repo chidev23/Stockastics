@@ -1,5 +1,5 @@
 import { Link, router } from 'expo-router';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { setTestSession } from '../../src/session';
@@ -33,7 +33,13 @@ export default function RegisterScreen() {
       <View className="flex-1 px-6">
         <View className="flex-1 justify-center">
           <View className="mx-auto w-full max-w-[520px]">
-            <View className="items-center"><View className="h-16 w-16 items-center justify-center rounded-2xl bg-green-50"><Text className="text-3xl font-extrabold" style={{ color: GREEN }}>S</Text></View><Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Create account</Text><Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text></View>
+            <View className="items-center">
+              <View className="h-20 w-20 overflow-hidden rounded-2xl bg-black">
+                <Image source={require('../../assets/icon.jpg')} className="h-full w-full" resizeMode="contain" accessibilityLabel="STOCKASTICS logo" />
+              </View>
+              <Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Create account</Text>
+              <Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text>
+            </View>
             <Pressable onPress={handleGoogleSignup} className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-white active:opacity-70"><GoogleLogo /><Text className="ml-3 text-base font-semibold text-slate-800">Sign up with Google</Text></Pressable>
             <View className="my-6 flex-row items-center"><View className="h-px flex-1 bg-slate-200" /><Text className="mx-4 text-base font-medium text-slate-500">or</Text><View className="h-px flex-1 bg-slate-200" /></View>
             <View className="gap-4"><TextInput placeholder="Full name" placeholderTextColor="#A1A1AA" autoComplete="name" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /><TextInput placeholder="Email address" placeholderTextColor="#A1A1AA" autoCapitalize="none" autoComplete="email" keyboardType="email-address" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /><TextInput placeholder="Password" placeholderTextColor="#A1A1AA" secureTextEntry autoComplete="new-password" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /></View>
