@@ -6,19 +6,17 @@
     "orientation": "portrait",
     "scheme": "stockastics",
     "userInterfaceStyle": "light",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon.jpg",
     "splash": {
-      "image": "./assets/icon.png",
-      "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
     "plugins": ["expo-router", "expo-notifications", "expo-splash-screen"],
     "experiments": {"typedRoutes": true},
     "android": {
       "package": "com.stochastics.mobile",
-      "icon": "./assets/icon.png",
+      "icon": "./assets/icon.jpg",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/icon.jpg",
         "backgroundColor": "#000000"
       }
     },
