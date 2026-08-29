@@ -4,8 +4,6 @@ import { Animated, Easing, Image, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { hasTestSession } from '../src/session';
 
-const GREEN = '#16A34A';
-
 export default function SplashScreen() {
   const opacity = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(0.82)).current;
@@ -40,7 +38,7 @@ export default function SplashScreen() {
         <Animated.View style={{ opacity, transform: [{ scale }], alignItems: 'center' }}>
           <View style={{ width: 150, height: 150, borderRadius: 32, overflow: 'hidden', backgroundColor: '#000000' }}>
             <Image
-              source={require('../assets/icon.png')}
+              source={require('../assets/icon.jpg')}
               resizeMode="contain"
               style={{ width: '100%', height: '100%' }}
             />
