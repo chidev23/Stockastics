@@ -1,11 +1,11 @@
 import { Tabs, usePathname, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hasActiveSignalAccess } from '../../src/session';
 
-const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
+const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   index: 'home-outline',
   signals: 'pulse-outline',
   markets: 'stats-chart-outline',
@@ -13,10 +13,17 @@ const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
   more: 'menu-outline',
 };
 
-// These are the only root sections that should own the persistent bottom navigation.
+const LABELS: Record<string, string> = {
+  index: 'Home',
+  signals: 'Signals',
+  markets: 'Markets',
+  news: 'News',
+  more: 'More',
+};
+
+// Only these five root sections own the persistent bottom navigation.
 const PRIMARY_TABS = new Set(['index', 'signals', 'markets', 'news', 'more']);
 
-// All signal-category pages are protected by the user's active trial/monthly plan.
 const SIGNAL_ROUTES = new Set([
   '/signals',
   '/retail-signals',
@@ -27,12 +34,107 @@ const SIGNAL_ROUTES = new Set([
   '/income-signals',
 ]);
 
-function MainTabs() {
+function StockasticsTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
+  const activeRoute = state.routes[state.index];
+  const activeName = activeRoute?.name;
+
+  // Secondary/detail screens must have no bottom navigation at all.
+  if (!PRIMARY_TABS.has(activeName)) return null;
+
+  const bottomInset = Math.max(insets.bottom, 8);
+
+  return (
+    <View
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderTopColor: '#DDE5E1',
+        paddingBottom: bottomInset,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 10,
+      }}
+    >
+      <View style={{ height: 68, flexDirection: 'row', width: '100%' }}>
+        {Array.from(PRIMARY_TABS).map((name, index) => {
+          const route = state.routes.find((item: any) => item.name === name);
+          if (!route) return null;
+
+          const focused = activeName === name;
+          const color = focused ? '#16A34A' : '#64748B';
+          const options = descriptors[route.key]?.options ?? {};
+          const label = options.tabBarLabel ?? options.title ?? LABELS[name];
+          const icon = ICONS[name];
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+            if (!focused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          return (
+            <Pressable
+              key={route.key}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
+              accessibilityLabel={String(label)}
+              onPress={onPress}
+              style={({ pressed }) => ({
+                flex: 1,
+                minWidth: 0,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingTop: 6,
+                paddingBottom: 4,
+                borderLeftWidth: index === 0 ? 0 : 1,
+                borderLeftColor: '#EEF2F0',
+                opacity: pressed ? 0.65 : 1,
+              })}
+            >
+              <View
+                style={{
+                  minWidth: 48,
+                  height: 32,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 12,
+                  backgroundColor: focused ? '#EAF8EE' : 'transparent',
+                }}
+              >
+                <Ionicons name={icon} size={22} color={color} />
+              </View>
+              <Text
+                numberOfLines={1}
+                style={{
+                  marginTop: 3,
+                  fontSize: 11,
+                  lineHeight: 14,
+                  fontWeight: focused ? '800' : '600',
+                  color,
+                }}
+              >
+                {label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+function MainTabs() {
   const pathname = usePathname();
   const router = useRouter();
   const [checkingAccess, setCheckingAccess] = useState(true);
-
   const isSignalRoute = SIGNAL_ROUTES.has(pathname);
 
   useEffect(() => {
@@ -60,9 +162,6 @@ function MainTabs() {
     return () => { mounted = false; };
   }, [isSignalRoute, pathname, router]);
 
-  const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 6 : 0);
-  const baseHeight = 58;
-
   if (isSignalRoute && checkingAccess) {
     return (
       <View className="flex-1 items-center justify-center bg-slate-50">
@@ -73,33 +172,13 @@ function MainTabs() {
 
   return (
     <Tabs
-      screenOptions={({ route }) => {
-        const isPrimaryTab = PRIMARY_TABS.has(route.name);
-
-        return {
-          headerShown: false,
-          tabBarActiveTintColor: '#16A34A',
-          tabBarInactiveTintColor: '#64748B',
-          tabBarLabelStyle: { fontSize: 11, fontWeight: '700', marginTop: -1 },
-          tabBarItemStyle: { paddingTop: 2 },
-          tabBarIconStyle: { marginBottom: -1 },
-          tabBarStyle: {
-            display: isPrimaryTab ? 'flex' : 'none',
-            height: baseHeight + bottomInset,
-            paddingTop: 5,
-            paddingBottom: bottomInset + 4,
-            borderTopWidth: 1,
-            borderTopColor: '#E2E8F0',
-            backgroundColor: '#FFFFFF',
-            elevation: 8,
-            shadowOpacity: 0.08,
-          },
-          tabBarHideOnKeyboard: true,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name={icons[route.name] ?? 'ellipse-outline'} size={size} color={color} />
-          ),
-        };
-      }}
+      tabBar={(props) => <StockasticsTabBar {...props} />}
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: '#16A34A',
+        tabBarInactiveTintColor: '#64748B',
+      })}
     >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
       <Tabs.Screen name="signals" options={{ title: 'Signals' }} />
