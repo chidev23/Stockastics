@@ -10,7 +10,6 @@ const items = [
   ['Community Chat', 'chatbubbles-outline', '/community-chat'],
   ['Portfolio Register', 'briefcase-outline', '/portfolio-register'],
   ['Sticks AI', 'sparkles-outline', '/sticks-ai'],
-  ['AI Troubleshoot', 'construct-outline', '/ai-troubleshoot'],
 ] as const;
 
 export default function MoreScreen() {
