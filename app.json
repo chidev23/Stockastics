@@ -6,21 +6,31 @@
     "orientation": "portrait",
     "scheme": "stockastics",
     "userInterfaceStyle": "light",
-    "icon": "./assets/icon.jpg",
-    "splash": {
-      "backgroundColor": "#000000"
+    "icon": "./assets/icon.png",
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/icon.png",
+          "backgroundColor": "#000000",
+          "imageWidth": 250,
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
     },
-    "plugins": ["expo-router", "expo-notifications", "expo-splash-screen"],
-    "experiments": {"typedRoutes": true},
     "android": {
-      "package": "com.stochastics.mobile",
-      "icon": "./assets/icon.jpg",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.jpg",
-        "backgroundColor": "#000000"
-      }
+      "package": "com.stochastics.mobile"
     },
-    "ios": {"bundleIdentifier": "com.stochastics.mobile"},
-    "web": {"bundler": "metro"}
+    "ios": {
+      "bundleIdentifier": "com.stochastics.mobile"
+    },
+    "web": {
+      "bundler": "metro"
+    }
   }
 }
