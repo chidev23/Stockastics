@@ -1,5 +1,5 @@
 import { Link, router } from 'expo-router';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { setTestSession } from '../../src/session';
@@ -34,8 +34,8 @@ export default function LoginScreen() {
         <View className="flex-1 justify-center">
           <View className="mx-auto w-full max-w-[520px]">
             <View className="items-center">
-              <View className="h-16 w-16 items-center justify-center rounded-2xl bg-green-50">
-                <Text className="text-3xl font-extrabold" style={{ color: GREEN }}>S</Text>
+              <View className="h-20 w-20 overflow-hidden rounded-2xl bg-black">
+                <Image source={require('../../assets/icon.jpg')} className="h-full w-full" resizeMode="contain" accessibilityLabel="STOCKASTICS logo" />
               </View>
               <Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Welcome back</Text>
               <Text className="mt-2 text-center text-base text-slate-500">Sign in to your STOCKASTICS account</Text>
