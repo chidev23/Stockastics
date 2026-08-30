@@ -15,8 +15,8 @@ export default function CommunityChat() {
   const bottomSafePadding = Math.max(insets.bottom, 12);
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
-      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
+    <SafeAreaView className="flex-1 bg-slate-50" edges={['top', 'bottom']}>
+      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={0}>
         <View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
           <Pressable onPress={() => router.back()}><Ionicons name="arrow-back" size={24} color="#0F172A" /></Pressable>
           <Text className="text-xl font-extrabold text-slate-900">Community Chat</Text>
@@ -39,10 +39,12 @@ export default function CommunityChat() {
             </View>
           ))}
         </ScrollView>
-        <View className="flex-row items-center border-t border-slate-200 bg-white px-4 pt-3" style={{ paddingBottom: bottomSafePadding }}>
-          <Pressable className="mr-2 h-11 w-9 items-center justify-center"><Ionicons name="attach" size={22} color="#64748B" /></Pressable>
-          <TextInput placeholder="Type a message..." placeholderTextColor="#94A3B8" returnKeyType="send" className="mr-2 min-h-11 flex-1 rounded-xl bg-slate-100 px-4 py-2 text-base text-slate-900" />
-          <Pressable className="min-h-11 rounded-xl bg-blue-700 px-5 items-center justify-center"><Text className="font-bold text-white">Send</Text></Pressable>
+        <View className="border-t border-slate-200 bg-white px-4 pt-3" style={{ paddingBottom: bottomSafePadding }}>
+          <View className="flex-row items-center">
+            <Pressable className="mr-2 h-11 w-9 items-center justify-center"><Ionicons name="attach" size={22} color="#64748B" /></Pressable>
+            <TextInput placeholder="Type a message..." placeholderTextColor="#94A3B8" returnKeyType="send" className="mr-2 min-h-11 flex-1 rounded-xl bg-slate-100 px-4 py-2 text-base text-slate-900" />
+            <Pressable className="min-h-11 rounded-xl bg-blue-700 px-5 items-center justify-center"><Text className="font-bold text-white">Send</Text></Pressable>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
