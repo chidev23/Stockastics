@@ -7,6 +7,9 @@
     "scheme": "stockastics",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "plugins": [
       "expo-router",
       "expo-notifications",
