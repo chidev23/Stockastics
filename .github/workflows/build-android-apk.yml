@@ -31,8 +31,7 @@ jobs:
           test -f assets/icon.jpg
           sudo apt-get update
           sudo apt-get install -y imagemagick
-          # Ubuntu's ImageMagick package provides ImageMagick 6, where the
-          # executable is `convert`, not the ImageMagick 7 `magick` wrapper.
+          # Ubuntu 24.04 provides ImageMagick 6, whose executable is `convert`.
           command -v convert
           convert assets/icon.jpg -strip -define png:color-type=6 assets/icon.png
           test -s assets/icon.png
@@ -53,23 +52,48 @@ jobs:
           npm ls react-native-worklets --depth=0
           node -e "const p=require('./node_modules/react-native-worklets/package.json'); if(p.version !== '0.10.1') { console.error('Expected react-native-worklets 0.10.1, found '+p.version); process.exit(1); }"
 
+      - name: Validate Expo runtime configuration
+        run: |
+          node - <<'NODE'
+          const app = require('./app.json').expo;
+          const runtime = app.runtimeVersion;
+          if (!runtime || runtime.policy !== 'appVersion') {
+            throw new Error('app.json must configure runtimeVersion.policy as appVersion');
+          }
+          if (app.splash) {
+            throw new Error('Legacy expo.splash config must not be present; use expo-splash-screen plugin configuration.');
+          }
+          if (!app.icon || !app.icon.endsWith('.png')) {
+            throw new Error('Expo icon must point to a PNG file.');
+          }
+          console.log('Expo runtimeVersion:', JSON.stringify(runtime));
+          console.log('Expo icon:', app.icon);
+          NODE
+
       - name: Setup Expo/EAS CLI
         run: npm install --global eas-cli@latest
 
       - name: Verify Expo authentication
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           test -n "$EXPO_TOKEN" || { echo "EXPO_TOKEN GitHub Actions secret is not available to this workflow."; exit 1; }
           eas whoami
 
       - name: Initialize or link EAS project
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas init --account capitalshield --non-interactive
 
       - name: Configure EAS Update
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas update:configure --platform android --non-interactive
 
       - name: Verify EAS Update configuration
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
-          eas config --platform android --profile preview --non-interactive
           node - <<'NODE'
           const app = require('./app.json').expo;
           if (!app.updates?.url) throw new Error('EAS Update URL was not configured in app.json');
@@ -79,9 +103,13 @@ jobs:
           NODE
 
       - name: Build Android APK with EAS
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas build --platform android --profile preview --clear-cache --non-interactive --wait
 
       - name: Publish JavaScript OTA update
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           eas update \
             --channel preview \
@@ -90,9 +118,13 @@ jobs:
             --non-interactive
 
       - name: Build summary
-        if: always()
+        if: success()
         run: |
-          echo "STOCKASTICS Android APK build completed."
+          echo "STOCKASTICS Android APK build completed successfully."
           echo "An EAS Update was also published to the preview channel."
-          echo "Install the newly generated preview APK once to enable OTA updates on this device."
-          echo "Future JavaScript/UI changes published to the preview channel will update existing compatible installations without uninstalling the app."
+          echo "Future JavaScript/UI changes published to the preview channel will update compatible installations without uninstalling the app."
+
+      - name: Build failure summary
+        if: failure()
+        run: |
+          echo "STOCKASTICS Android APK/OTA workflow failed. Review the failed step above."
