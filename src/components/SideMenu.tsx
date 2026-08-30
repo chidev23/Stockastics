@@ -11,6 +11,9 @@ const items = [
   { label: 'Profile', icon: 'person-outline' as const, route: '/profile' },
   { label: 'Subscription', icon: 'card-outline' as const, route: '/subscription' },
   { label: 'Affiliate', icon: 'people-outline' as const, route: '/affiliate' },
+  { label: 'Customer support', icon: 'headset-outline' as const, route: '/customer-support' },
+  { label: 'Legal', icon: 'shield-checkmark-outline' as const, route: '/legal' },
+  { label: 'Blog and Article', icon: 'document-text-outline' as const, route: '/blog-articles' },
   { label: 'Settings', icon: 'settings-outline' as const, route: '/settings' },
 ];
 
@@ -24,9 +27,8 @@ export default function SideMenu({ visible, onClose }: SideMenuProps) {
 
   return (
     <View className="absolute left-0 right-0 top-0 bottom-0 z-50 flex-row">
-      {/* LEFT drawer: fixed to the physical left edge of the app. */}
       <View className="h-full w-[82%] max-w-[340px] bg-white px-5 pb-8 pt-14 shadow-2xl">
-        <View className="mb-8 flex-row items-center justify-between">
+        <View className="mb-6 flex-row items-center justify-between">
           <View>
             <Text className="text-xs font-extrabold uppercase tracking-[2px] text-emerald-600">STOCKASTICS</Text>
             <Text className="mt-1 text-xl font-extrabold text-slate-900">Menu</Text>
@@ -37,13 +39,7 @@ export default function SideMenu({ visible, onClose }: SideMenuProps) {
         </View>
 
         {items.map((item) => (
-          <Pressable
-            key={item.label}
-            accessibilityRole="button"
-            accessibilityLabel={item.label}
-            onPress={() => navigate(item.route)}
-            className="mb-2 flex-row items-center rounded-2xl px-4 py-4 active:bg-slate-100"
-          >
+          <Pressable key={item.label} accessibilityRole="button" accessibilityLabel={item.label} onPress={() => navigate(item.route)} className="mb-1 flex-row items-center rounded-2xl px-4 py-3.5 active:bg-slate-100">
             <View className="mr-4 h-11 w-11 items-center justify-center rounded-xl bg-emerald-50">
               <Ionicons name={item.icon} size={22} color="#16A34A" />
             </View>
@@ -52,13 +48,21 @@ export default function SideMenu({ visible, onClose }: SideMenuProps) {
           </Pressable>
         ))}
 
+        <View className="mt-3 border-t border-slate-100 pt-3">
+          <Pressable accessibilityRole="button" accessibilityLabel="Delete Account" onPress={() => navigate('/delete-account')} className="flex-row items-center rounded-2xl px-4 py-3.5 active:bg-red-50">
+            <View className="mr-4 h-11 w-11 items-center justify-center rounded-xl bg-red-50">
+              <Ionicons name="trash-outline" size={22} color="#DC2626" />
+            </View>
+            <Text className="flex-1 text-base font-bold text-red-600">Delete Account</Text>
+            <Ionicons name="chevron-forward" size={18} color="#F87171" />
+          </Pressable>
+        </View>
+
         <View className="mt-auto rounded-2xl bg-slate-50 p-4">
           <Text className="text-xs font-bold text-slate-500">STOCKASTICS</Text>
           <Text className="mt-1 text-xs leading-5 text-slate-400">Market intelligence and independent BUY signals.</Text>
         </View>
       </View>
-
-      {/* Remaining area is only the dismissible backdrop. */}
       <Pressable accessibilityRole="button" accessibilityLabel="Close menu" className="flex-1 bg-black/40" onPress={onClose} />
     </View>
   );
