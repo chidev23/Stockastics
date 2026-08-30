@@ -9,7 +9,6 @@ const items = [
   ['Community Sentiment', 'people-outline', '/community-sentiment'],
   ['Community Chat', 'chatbubbles-outline', '/community-chat'],
   ['Portfolio Register', 'briefcase-outline', '/portfolio-register'],
-  ['Sticks AI', 'sparkles-outline', '/sticks-ai'],
   ['Company Report', 'business-outline', '/company-report'],
   ['News Analytics and Speculation', 'analytics-outline', '/news-analytics'],
   ['Behavioural Report', 'pulse-outline', '/behavioural-report'],
