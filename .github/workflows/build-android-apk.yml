@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK + Publish OTA Update
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-android:
-    name: Build STOCKASTICS APK
+    name: Build STOCKASTICS APK and publish OTA update
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Prepare PNG app assets
         run: |
@@ -29,8 +30,8 @@ jobs:
           test -f assets/icon.jpg
           sudo apt-get update
           sudo apt-get install -y imagemagick
-          # Ubuntu's imagemagick package currently provides ImageMagick 6,
-          # where the executable is `convert`, not the ImageMagick 7 `magick` wrapper.
+          # Ubuntu's ImageMagick package provides ImageMagick 6, where the
+          # executable is `convert`, not the ImageMagick 7 `magick` wrapper.
           command -v convert
           convert assets/icon.jpg -strip -define png:color-type=6 assets/icon.png
           test -s assets/icon.png
@@ -39,9 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Force Expo-compatible Worklets version
-        run: npm install react-native-worklets@0.10.1 --save-exact
 
       - name: Verify Expo dependency versions
         run: npx expo install --check
@@ -67,13 +65,41 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas init --account capitalshield --non-interactive
 
+      - name: Configure EAS Update
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas update:configure --platform android --non-interactive
+
+      - name: Verify EAS Update configuration
+        run: |
+          eas config --platform android --profile preview --non-interactive
+          node - <<'NODE'
+          const app = require('./app.json').expo;
+          if (!app.updates?.url) throw new Error('EAS Update URL was not configured in app.json');
+          if (!app.runtimeVersion) throw new Error('runtimeVersion was not configured in app.json');
+          console.log('EAS Update URL:', app.updates.url);
+          console.log('Runtime version:', JSON.stringify(app.runtimeVersion));
+          NODE
+
       - name: Build Android APK with EAS
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas build --platform android --profile preview --clear-cache --non-interactive --wait
 
+      - name: Publish JavaScript OTA update
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          eas update \
+            --channel preview \
+            --environment preview \
+            --message "STOCKASTICS GitHub OTA update: ${{ github.sha }}" \
+            --non-interactive
+
       - name: Build summary
         if: always()
         run: |
-          echo "STOCKASTICS Android APK build workflow completed."
-          echo "Check the EAS build URL printed by the EAS CLI above for the APK download."
+          echo "STOCKASTICS Android APK build completed."
+          echo "An EAS Update was also published to the preview channel."
+          echo "Install the newly generated preview APK once to enable OTA updates on this device."
+          echo "Future JavaScript/UI changes published to the preview channel will update existing compatible installations without uninstalling the app."
