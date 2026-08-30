@@ -21,9 +21,9 @@ export default function ForgotPasswordScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
-        <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="flex-grow justify-center px-6 py-8">
+    <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
+      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={0}>
+        <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="flex-grow justify-center px-6 py-8" automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}>
           <View className="mx-auto w-full max-w-[520px]">
             <Text className="text-3xl font-extrabold text-slate-900">Reset password</Text>
             <Text className="mt-2 text-base text-slate-500">Enter the email linked to your STOCKASTICS account.</Text>
