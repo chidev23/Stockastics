@@ -12,7 +12,7 @@ const items = [
   ['Sticks AI', 'sparkles-outline', '/sticks-ai'],
   ['Company Report', 'business-outline', '/company-report'],
   ['News Analytics and Speculation', 'analytics-outline', '/news-analytics'],
-  ['Behavioural Report', 'brain-outline', '/behavioural-report'],
+  ['Behavioural Report', 'pulse-outline', '/behavioural-report'],
 ] as const;
 
 export default function MoreScreen() {
