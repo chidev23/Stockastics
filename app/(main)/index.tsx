@@ -7,9 +7,8 @@ import SideMenu from '../../src/components/SideMenu';
 
 const quickActions = [
   { label: 'Retail', icon: 'trending-up-outline' as const, route: '/(main)/retail-signals' },
-  { label: 'Markets', icon: 'stats-chart-outline' as const, route: '/(main)/markets' },
-  { label: 'News', icon: 'newspaper-outline' as const, route: '/(main)/news' },
-  { label: 'Sentiment', icon: 'pulse-outline' as const, route: '/(main)/sentiment-signals' },
+  { label: 'Sticks AI', icon: 'sparkles-outline' as const, route: '/(main)/sticks-ai' },
+  { label: 'Religious beliefs', icon: 'book-outline' as const, route: '/(main)/religious-beliefs' },
 ];
 
 export default function HomeScreen() {
@@ -29,7 +28,9 @@ export default function HomeScreen() {
         <View className="mt-6 overflow-hidden rounded-3xl bg-emerald-600 p-5"><View className="flex-row items-center justify-between"><View className="rounded-full bg-white/20 px-3 py-1"><Text className="text-xs font-bold text-emerald-50">MARKET INTELLIGENCE</Text></View><Ionicons name="pulse" size={22} color="#FFFFFF" /></View><Text className="mt-4 text-2xl font-extrabold text-white">Discover market opportunities</Text><Text className="mt-2 leading-5 text-emerald-50">Monitor independent BUY signals, market movements, news and investor sentiment.</Text><Pressable accessibilityRole="button" onPress={() => router.push('/(main)/signals')} className="mt-5 self-start rounded-xl bg-white px-5 py-3 active:opacity-80"><Text className="font-bold text-emerald-700">View Signals</Text></Pressable></View>
 
         <View className="mt-7 flex-row items-center justify-between"><Text className="text-lg font-extrabold text-slate-900">Quick access</Text><Text className="text-xs font-medium text-slate-400">Explore</Text></View>
-        <View className="mt-3 flex-row flex-wrap justify-between">{quickActions.map((action)=><Pressable key={action.label} accessibilityRole="button" accessibilityLabel={action.label} onPress={()=>router.push(action.route as never)} className="mb-3 w-[48%] rounded-2xl bg-white p-4 active:bg-slate-100"><View className="h-10 w-10 items-center justify-center rounded-xl bg-emerald-50"><Ionicons name={action.icon} size={21} color="#16A34A" /></View><Text className="mt-3 font-bold text-slate-800">{action.label}</Text></Pressable>)}</View>
+        <View className="mt-3 flex-row flex-wrap justify-between">
+          {quickActions.map((action) => <Pressable key={action.label} accessibilityRole="button" accessibilityLabel={action.label} onPress={() => router.push(action.route as never)} className="mb-3 w-[48%] rounded-2xl bg-white p-4 active:bg-slate-100"><View className="h-10 w-10 items-center justify-center rounded-xl bg-emerald-50"><Ionicons name={action.icon} size={21} color="#16A34A" /></View><Text className="mt-3 font-bold text-slate-800">{action.label}</Text></Pressable>)}
+        </View>
       </ScrollView>
       <SideMenu visible={menuOpen} onClose={() => setMenuOpen(false)} />
     </SafeAreaView>
