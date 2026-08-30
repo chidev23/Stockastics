@@ -27,7 +27,8 @@
       "typedRoutes": true
     },
     "android": {
-      "package": "com.stochastics.mobile"
+      "package": "com.stochastics.mobile",
+      "softwareKeyboardLayoutMode": "resize"
     },
     "ios": {
       "bundleIdentifier": "com.stochastics.mobile"
