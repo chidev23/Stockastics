@@ -14,6 +14,8 @@ jobs:
     name: Build STOCKASTICS APK and publish OTA update
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -55,18 +57,14 @@ jobs:
         run: npm install --global eas-cli@latest
 
       - name: Verify Expo authentication
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-        run: eas whoami
+        run: |
+          test -n "$EXPO_TOKEN" || { echo "EXPO_TOKEN GitHub Actions secret is not available to this workflow."; exit 1; }
+          eas whoami
 
       - name: Initialize or link EAS project
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas init --account capitalshield --non-interactive
 
       - name: Configure EAS Update
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas update:configure --platform android --non-interactive
 
       - name: Verify EAS Update configuration
@@ -81,13 +79,9 @@ jobs:
           NODE
 
       - name: Build Android APK with EAS
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: eas build --platform android --profile preview --clear-cache --non-interactive --wait
 
       - name: Publish JavaScript OTA update
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           eas update \
             --channel preview \
