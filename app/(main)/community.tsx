@@ -16,7 +16,7 @@ export default function CommunityScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top', 'bottom']}>
-      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={0}>
+      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
         <View className="px-5 pt-4">
           <View className="flex-row items-center justify-between">
             <View><Text className="text-2xl font-extrabold text-slate-900">Community</Text><Text className="mt-1 text-sm text-slate-500">Connect with other STOCKASTICS users.</Text></View>
