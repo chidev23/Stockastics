@@ -13,36 +13,135 @@ const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
   more: 'menu-outline',
 };
 
-const LABELS: Record<string, string> = { index: 'Home', signals: 'Signals', markets: 'Markets', news: 'News', more: 'More' };
+const LABELS: Record<string, string> = {
+  index: 'Home',
+  signals: 'Signals',
+  markets: 'Markets',
+  news: 'News',
+  more: 'More',
+};
+
+// Each primary navigation item has its own consistent brand color.
+// The color is used for both the icon and its label so the navigation
+// remains visually identifiable even when it is not selected.
+const NAV_COLORS: Record<string, string> = {
+  index: '#16A34A',
+  signals: '#2563EB',
+  markets: '#0F766E',
+  news: '#7C3AED',
+  more: '#475569',
+};
+
 const PRIMARY_TABS = ['index', 'signals', 'markets', 'news', 'more'] as const;
 const PRIMARY_TAB_SET = new Set<string>(PRIMARY_TABS);
-const SIGNAL_ROUTES = new Set(['/signals', '/retail-signals', '/ipo-signals', '/buyback-signals', '/sentiment-signals', '/ex-dividend-signals', '/income-signals']);
+const SIGNAL_ROUTES = new Set([
+  '/signals',
+  '/retail-signals',
+  '/ipo-signals',
+  '/buyback-signals',
+  '/sentiment-signals',
+  '/ex-dividend-signals',
+  '/income-signals',
+]);
 
 function StockasticsTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
   const activeName = state.routes[state.index]?.name;
   if (!PRIMARY_TAB_SET.has(activeName)) return null;
+
   const bottomInset = Math.max(insets.bottom, 8);
 
   return (
-    <View style={{ width: '100%', alignSelf: 'stretch', backgroundColor: '#FFFFFF', borderTopWidth: 1, borderTopColor: '#DDE5E1', paddingBottom: bottomInset, shadowColor: '#000000', shadowOffset: { width: 0, height: -2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 10 }}>
-      <View style={{ width: '100%', alignSelf: 'stretch', height: 72, flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View
+      style={{
+        width: '100%',
+        alignSelf: 'stretch',
+        backgroundColor: '#FFFFFF',
+        borderTopWidth: 1,
+        borderTopColor: '#DDE5E1',
+        paddingBottom: bottomInset,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 10,
+      }}
+    >
+      <View
+        style={{
+          width: '100%',
+          alignSelf: 'stretch',
+          height: 82,
+          flexDirection: 'row',
+          alignItems: 'stretch',
+        }}
+      >
         {PRIMARY_TABS.map((name, index) => {
           const route = state.routes.find((item: any) => item.name === name);
           if (!route) return null;
+
           const focused = activeName === name;
-          const color = focused ? '#16A34A' : '#64748B';
+          const baseColor = NAV_COLORS[name];
+          const color = focused ? baseColor : `${baseColor}B3`;
           const options = descriptors[route.key]?.options ?? {};
           const label = options.tabBarLabel ?? options.title ?? LABELS[name];
+
           return (
-            <Pressable key={route.key} accessibilityRole="tab" accessibilityState={{ selected: focused }} accessibilityLabel={String(label)} onPress={() => {
-              const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-              if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
-            }} style={({ pressed }) => ({ flexGrow: 1, flexShrink: 1, flexBasis: 0, minWidth: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4, paddingTop: 6, paddingBottom: 4, borderLeftWidth: index === 0 ? 0 : 1, borderLeftColor: '#EEF2F0', opacity: pressed ? 0.65 : 1 })}>
-              <View style={{ width: 52, height: 34, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: focused ? '#EAF8EE' : 'transparent' }}>
-                <Ionicons name={ICONS[name]} size={23} color={color} />
+            <Pressable
+              key={route.key}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
+              accessibilityLabel={String(label)}
+              onPress={() => {
+                const event = navigation.emit({
+                  type: 'tabPress',
+                  target: route.key,
+                  canPreventDefault: true,
+                });
+                if (!focused && !event.defaultPrevented) {
+                  navigation.navigate(route.name);
+                }
+              }}
+              style={({ pressed }) => ({
+                flex: 1,
+                minWidth: 0,
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                paddingTop: 7,
+                paddingBottom: 5,
+                paddingHorizontal: 2,
+                opacity: pressed ? 0.65 : 1,
+                borderLeftWidth: index === 0 ? 0 : 1,
+                borderLeftColor: '#EEF2F0',
+              })}
+            >
+              <View
+                style={{
+                  width: 48,
+                  height: 42,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 13,
+                  backgroundColor: focused ? `${baseColor}18` : 'transparent',
+                }}
+              >
+                <Ionicons name={ICONS[name]} size={25} color={color} />
               </View>
-              <Text numberOfLines={1} style={{ marginTop: 3, fontSize: 11, lineHeight: 14, fontWeight: focused ? '800' : '600', color }}>{label}</Text>
+
+              <Text
+                numberOfLines={1}
+                allowFontScaling={false}
+                style={{
+                  marginTop: 4,
+                  fontSize: 12,
+                  lineHeight: 16,
+                  fontWeight: focused ? '800' : '600',
+                  color,
+                  textAlign: 'center',
+                }}
+              >
+                {label}
+              </Text>
             </Pressable>
           );
         })}
@@ -56,22 +155,52 @@ function MainTabs() {
   const router = useRouter();
   const [checkingAccess, setCheckingAccess] = useState(true);
   const isSignalRoute = SIGNAL_ROUTES.has(pathname);
+
   useEffect(() => {
     let mounted = true;
+
     async function checkAccess() {
-      if (!isSignalRoute) { if (mounted) setCheckingAccess(false); return; }
+      if (!isSignalRoute) {
+        if (mounted) setCheckingAccess(false);
+        return;
+      }
+
       if (mounted) setCheckingAccess(true);
       const active = await hasActiveSignalAccess();
       if (!mounted) return;
-      if (!active) { router.replace('/(main)/subscription'); return; }
+
+      if (!active) {
+        router.replace('/(main)/subscription');
+        return;
+      }
+
       setCheckingAccess(false);
     }
+
     checkAccess();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [isSignalRoute, pathname, router]);
-  if (isSignalRoute && checkingAccess) return <View className="flex-1 items-center justify-center bg-slate-50"><ActivityIndicator size="large" color="#16A34A" /></View>;
+
+  if (isSignalRoute && checkingAccess) {
+    return (
+      <View className="flex-1 items-center justify-center bg-slate-50">
+        <ActivityIndicator size="large" color="#16A34A" />
+      </View>
+    );
+  }
+
   return (
-    <Tabs tabBar={(props) => <StockasticsTabBar {...props} />} screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true, tabBarActiveTintColor: '#16A34A', tabBarInactiveTintColor: '#64748B' }}>
+    <Tabs
+      tabBar={(props) => <StockasticsTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarActiveTintColor: '#16A34A',
+        tabBarInactiveTintColor: '#64748B',
+      }}
+    >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
       <Tabs.Screen name="signals" options={{ title: 'Signals' }} />
       <Tabs.Screen name="markets" options={{ title: 'Markets' }} />
@@ -81,4 +210,6 @@ function MainTabs() {
   );
 }
 
-export default function MainLayout() { return <MainTabs />; }
+export default function MainLayout() {
+  return <MainTabs />;
+}
