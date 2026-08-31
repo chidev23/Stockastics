@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import MoreBackButton from './MoreBackButton';
 
 type InfoPageProps = {
   title: string;
@@ -14,9 +14,7 @@ export default function InfoPage({ title, icon, intro, sections }: InfoPageProps
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
       <View className="flex-row items-center border-b border-slate-100 bg-white px-5 py-4">
-        <Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={() => router.back()} className="h-10 w-10 items-center justify-center rounded-full bg-slate-50 active:bg-slate-100">
-          <Ionicons name="arrow-back" size={22} color="#0F172A" />
-        </Pressable>
+        <MoreBackButton />
         <Text className="ml-3 flex-1 text-xl font-extrabold text-slate-900">{title}</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-5 pb-10 pt-5">
