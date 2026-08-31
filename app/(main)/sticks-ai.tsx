@@ -20,8 +20,8 @@ export default function SticksAI() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top', 'bottom']}>
-      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={0}>
-        <View className="flex-row items-center border-b border-slate-100 bg-white px-5 py-4"><Pressable onPress={() => router.back()}><Ionicons name="arrow-back" size={24} color="#0F172A" /></Pressable><Text className="ml-4 text-xl font-extrabold text-slate-900">Sticks AI</Text></View>
+      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}>
+        <View className="flex-row items-center border-b border-slate-100 bg-white px-5 py-4"><Pressable onPress={() => router.back()} hitSlop={8}><Ionicons name="arrow-back" size={24} color="#0F172A" /></Pressable><Text className="ml-4 text-xl font-extrabold text-slate-900">Sticks AI</Text></View>
         <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="px-5 pb-6 pt-5">
           <View className="rounded-3xl bg-blue-700 p-5"><Ionicons name="sparkles" size={25} color="white" /><Text className="mt-4 text-xl font-extrabold text-white">How can I help you today?</Text><Text className="mt-2 text-sm leading-5 text-blue-100">Ask about stocks, signals, sentiment, news or market events.</Text></View>
           <Text className="mb-3 mt-6 font-extrabold text-slate-900">Suggested Questions</Text>
