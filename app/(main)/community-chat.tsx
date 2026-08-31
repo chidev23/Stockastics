@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { router } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MoreBackButton from '../../src/components/MoreBackButton';
 
@@ -10,7 +9,7 @@ export default function CommunityChat(){
   const insets=useSafeAreaInsets();
   const bottomSafePadding=Math.max(insets.bottom,12);
   return <SafeAreaView className="flex-1 bg-slate-50" edges={['top','bottom']}>
-    <KeyboardAvoidingView className="flex-1" behavior={Platform.OS==='ios'?'padding':undefined} keyboardVerticalOffset={0}>
+    <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={Platform.OS==='ios'?0:24}>
       <View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4"><MoreBackButton/><Text className="text-xl font-extrabold text-slate-900">Community Chat</Text><Pressable><Ionicons name="search" size={21} color="#0F172A"/></Pressable></View>
       <View className="flex-row gap-2 px-5 py-3"><View className="rounded-full bg-blue-700 px-5 py-2"><Text className="text-xs font-bold text-white">Global</Text></View><View className="rounded-full bg-white px-5 py-2"><Text className="text-xs font-bold text-slate-700">Following</Text></View><View className="rounded-full bg-white px-5 py-2"><Text className="text-xs font-bold text-slate-700">Trending</Text></View></View>
       <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS==='ios'?'interactive':'on-drag'} contentContainerClassName="px-5 pb-5 pt-2">{posts.map(p=><View key={p[0]+p[1]} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4"><View className="flex-row items-center"><View className="h-9 w-9 items-center justify-center rounded-full bg-slate-100"><Ionicons name={p[0]==='SYSTEM'?'megaphone':'person'} size={17} color="#64748B"/></View><Text className="ml-3 font-bold text-slate-900">{p[0]} <Text className="font-normal text-slate-400">· {p[1]}</Text></Text></View><Text className="mt-3 text-sm leading-5 text-slate-700">{p[2]}</Text><View className="mt-3 flex-row"><Text className="text-xs text-slate-500">↻ {p[3]} shares · 💬 {p[4]} replies</Text><Text className="ml-auto text-xs text-slate-500">♡ Like</Text></View></View>)}</ScrollView>
