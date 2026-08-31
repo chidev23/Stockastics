@@ -16,7 +16,7 @@ export default function CommunityChat() {
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top', 'bottom']}>
-      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={0}>
+      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
         <View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
           <Pressable onPress={() => router.back()}><Ionicons name="arrow-back" size={24} color="#0F172A" /></Pressable>
           <Text className="text-xl font-extrabold text-slate-900">Community Chat</Text>
