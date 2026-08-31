@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.stochastics.mobile",
-      "softwareKeyboardLayoutMode": "resize"
+      "softwareKeyboardLayoutMode": "pan"
     },
     "ios": {
       "bundleIdentifier": "com.stochastics.mobile"
