@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,11 +13,16 @@ const categories = [
 ];
 
 export default function SignalsScreen() {
+  const params = useLocalSearchParams<{ religious?: string }>();
+  const religious = params.religious === 'halal' || params.religious === 'haram' ? params.religious : undefined;
+  const modeLabel = religious ? religious === 'halal' ? 'Halal' : 'Haram' : undefined;
+  const modeColor = religious === 'haram' ? '#DC2626' : '#16A34A';
+
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
       <View className="px-5 pt-4">
-        <Text className="text-2xl font-extrabold text-slate-900">Signals</Text>
-        <Text className="mt-1 text-sm text-slate-500">Select a signal category to explore market opportunities.</Text>
+        <Text className="text-2xl font-extrabold text-slate-900">{modeLabel ? `${modeLabel} Signals` : 'Signals'}</Text>
+        <Text className="mt-1 text-sm text-slate-500">{modeLabel ? `Only ${modeLabel}-classified stocks should be returned by the configured signal data source.` : 'Select a signal category to explore market opportunities.'}</Text>
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mt-5 max-h-20" contentContainerClassName="gap-2 px-5">
@@ -26,7 +31,7 @@ export default function SignalsScreen() {
             key={item.route}
             accessibilityRole="button"
             accessibilityLabel={`${item.label} signals`}
-            onPress={() => router.push(item.route as never)}
+            onPress={() => router.push({ pathname: item.route, params: religious ? { religious } : undefined } as never)}
             className={`min-w-[88px] items-center rounded-2xl px-3 py-3 ${index === 0 ? 'bg-blue-700' : 'border border-slate-200 bg-white'}`}
           >
             <Ionicons name={item.icon} size={20} color={index === 0 ? '#FFFFFF' : '#1E3A8A'} />
@@ -37,20 +42,14 @@ export default function SignalsScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-5 pb-8 pt-5">
         <View className="mb-5 flex-row items-center justify-between">
-          <View>
-            <Text className="text-lg font-extrabold text-slate-900">Retail Signals</Text>
-            <Text className="mt-1 text-sm text-slate-500">Current BUY opportunities</Text>
-          </View>
-          <View className="rounded-full bg-emerald-50 px-3 py-2"><Text className="text-xs font-extrabold text-emerald-600">BUY ONLY</Text></View>
+          <View><Text className="text-lg font-extrabold text-slate-900">{modeLabel ? `${modeLabel} BUY Signals` : 'Retail Signals'}</Text><Text className="mt-1 text-sm text-slate-500">Current BUY opportunities</Text></View>
+          <View style={{ backgroundColor: `${modeColor}14` }} className="rounded-full px-3 py-2"><Text style={{ color: modeColor }} className="text-xs font-extrabold">BUY ONLY</Text></View>
         </View>
 
-        <Pressable onPress={() => router.push('/retail-signals' as never)} className="rounded-2xl bg-white p-5 active:bg-slate-100">
-          <View className="flex-row items-center justify-between">
-            <View className="h-11 w-11 items-center justify-center rounded-xl bg-emerald-50"><Ionicons name="trending-up" size={22} color="#059669" /></View>
-            <Ionicons name="chevron-forward" size={20} color="#94A3B8" />
-          </View>
-          <Text className="mt-4 text-lg font-extrabold text-slate-900">View Retail BUY Signals</Text>
-          <Text className="mt-1 leading-5 text-slate-500">Open the retail signal feed to see available BUY opportunities and their market details.</Text>
+        <Pressable onPress={() => router.push({ pathname: '/retail-signals', params: religious ? { religious } : undefined } as never)} className="rounded-2xl bg-white p-5 active:bg-slate-100">
+          <View className="flex-row items-center justify-between"><View className="h-11 w-11 items-center justify-center rounded-xl bg-emerald-50"><Ionicons name="trending-up" size={22} color="#059669" /></View><Ionicons name="chevron-forward" size={20} color="#94A3B8" /></View>
+          <Text className="mt-4 text-lg font-extrabold text-slate-900">View {modeLabel ? `${modeLabel} ` : ''}Retail BUY Signals</Text>
+          <Text className="mt-1 leading-5 text-slate-500">{modeLabel ? `Open the retail signal feed. The production signal source must return only ${modeLabel}-classified stocks in this mode.` : 'Open the retail signal feed to see available BUY opportunities and their market details.'}</Text>
         </Pressable>
 
         <View className="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
