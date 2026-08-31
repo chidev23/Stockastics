@@ -30,8 +30,8 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
-      <KeyboardAvoidingView className="flex-1" behavior="padding" keyboardVerticalOffset={0}>
-        <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="flex-grow px-6 py-8" automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}>
+      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
+        <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="flex-grow px-6 py-8" automaticallyAdjustKeyboardInsets>
           <View className="flex-1 justify-center">
             <View className="mx-auto w-full max-w-[520px]">
               <View className="items-center">
