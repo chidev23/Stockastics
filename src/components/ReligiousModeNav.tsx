@@ -17,38 +17,18 @@ const items = [
 export default function ReligiousModeNav({ mode }: Props) {
   const insets = useSafeAreaInsets();
   const tint = mode === 'halal' ? '#16A34A' : '#DC2626';
-
   const navigate = (key: string) => {
     if (key === 'home') return router.replace('/(main)/index');
     if (key === 'more') return router.replace('/(main)/more');
     router.replace({ pathname: `/(main)/${key}`, params: { religious: mode } });
   };
-
   return (
     <View style={{ paddingBottom: Math.max(insets.bottom, 8) }} className="border-t border-slate-200 bg-white shadow-sm">
-      <View className="h-[76px] w-full flex-row items-stretch">
-        {items.map((item) => (
-          <Pressable
-            key={item.key}
-            accessibilityRole="button"
-            accessibilityLabel={item.label}
-            onPress={() => navigate(item.key)}
-            style={({ pressed }) => ({
-              flex: 1,
-              minWidth: 0,
-              alignItems: 'center',
-              justifyContent: 'center',
-              opacity: pressed ? 0.65 : 1,
-              borderLeftWidth: item.key === 'home' ? 0 : 1,
-              borderLeftColor: '#EEF2F0',
-            })}
-          >
-            <View style={{ backgroundColor: `${tint}14` }} className="h-10 w-12 items-center justify-center rounded-xl">
-              <Ionicons name={item.icon} size={23} color={tint} />
-            </View>
-            <Text style={{ color: tint }} className="mt-1 text-[11px] font-bold">{item.label}</Text>
-          </Pressable>
-        ))}
+      <View className="h-[82px] w-full flex-row items-stretch">
+        {items.map((item, index) => <Pressable key={item.key} accessibilityRole="button" accessibilityLabel={item.label} onPress={() => navigate(item.key)} style={({ pressed }) => ({ flex: 1, flexBasis: 0, minWidth: 0, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 7, paddingBottom: 5, paddingHorizontal: 0, opacity: pressed ? 0.65 : 1, borderLeftWidth: index === 0 ? 0 : 1, borderLeftColor: '#EEF2F0' })}>
+          <View style={{ backgroundColor: `${tint}14` }} className="h-11 w-12 items-center justify-center rounded-xl"><Ionicons name={item.icon} size={24} color={tint} /></View>
+          <Text numberOfLines={1} allowFontScaling={false} style={{ marginTop: 4, fontSize: 12, lineHeight: 16, fontWeight: '700', color: tint, textAlign: 'center' }}>{item.label}</Text>
+        </Pressable>)}
       </View>
     </View>
   );
