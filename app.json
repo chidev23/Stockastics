@@ -7,9 +7,7 @@
     "scheme": "stockastics",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": { "policy": "appVersion" },
     "plugins": [
       "expo-router",
       "expo-notifications",
@@ -23,18 +21,12 @@
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
+    "experiments": { "typedRoutes": true },
     "android": {
       "package": "com.stochastics.mobile",
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "resize"
     },
-    "ios": {
-      "bundleIdentifier": "com.stochastics.mobile"
-    },
-    "web": {
-      "bundler": "metro"
-    }
+    "ios": { "bundleIdentifier": "com.stochastics.mobile" },
+    "web": { "bundler": "metro" }
   }
 }
