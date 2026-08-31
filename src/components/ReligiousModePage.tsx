@@ -12,8 +12,8 @@ export default function ReligiousModePage({ mode }: Props) {
   const title = isHalal ? 'Halal stocks' : 'Haram stocks';
   const classification = isHalal ? 'Halal' : 'Haram';
   const description = isHalal
-    ? 'STOCKASTICS Halal mode organizes the stock experience around securities classified as Halal by the configured screening framework.'
-    : 'STOCKASTICS Haram mode organizes the stock experience around securities classified as Haram by the configured screening framework.';
+    ? 'Halal stocks are securities classified as permissible under the configured Islamic stock-screening framework. STOCKASTICS keeps the Signals, Markets and News experience focused on stocks carrying a Halal classification from the screening source.'
+    : 'Haram stocks are securities classified as not permissible under the configured Islamic stock-screening framework. STOCKASTICS keeps the Signals, Markets and News experience focused on stocks carrying a Haram classification from the screening source.';
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50" edges={['top', 'bottom']}>
@@ -21,11 +21,15 @@ export default function ReligiousModePage({ mode }: Props) {
         <Pressable accessibilityRole="button" accessibilityLabel="Back to Religious beliefs" onPress={() => router.replace('/(main)/religious-beliefs')} className="h-10 w-10 items-center justify-center rounded-full bg-slate-50 active:bg-slate-100" hitSlop={8}>
           <Ionicons name="arrow-back" size={22} color="#0F172A" />
         </Pressable>
-        <Text className="ml-3 flex-1 text-xl font-extrabold text-slate-900">{title}</Text>
+        <View className="flex-1 px-3">
+          <Text className="text-center text-sm font-extrabold tracking-[2px] text-emerald-600">STOCKASTICS</Text>
+          <Text style={{ color: accent }} className="mt-1 text-center text-xs font-extrabold uppercase tracking-widest">{classification} stocks</Text>
+        </View>
+        <View className="h-10 w-10" />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-5 pb-8 pt-7">
-        <View style={{ backgroundColor: accent }} className="rounded-3xl p-5">
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerClassName="px-5 pb-8 pt-6">
+        <View style={{ backgroundColor: accent }} className="overflow-hidden rounded-3xl p-5">
           <View className="flex-row items-center justify-between">
             <View className="rounded-full bg-white/20 px-3 py-1"><Text className="text-xs font-extrabold text-white">{classification.toUpperCase()} MODE</Text></View>
             <Ionicons name={isHalal ? 'checkmark-circle-outline' : 'close-circle-outline'} size={27} color="#FFFFFF" />
@@ -34,18 +38,25 @@ export default function ReligiousModePage({ mode }: Props) {
           <Text className="mt-2 text-sm leading-6 text-white/90">{description}</Text>
         </View>
 
-        <View className="mt-5 rounded-3xl bg-white p-5">
-          <Text className="text-lg font-extrabold text-slate-900">How {classification} stock screening works</Text>
+        <View className="mt-6 rounded-3xl bg-white p-5">
+          <Text className="text-lg font-extrabold text-slate-900">What are {classification} stocks?</Text>
           <Text className="mt-2 text-sm leading-6 text-slate-500">
-            Stocks shown in this mode should be classified using the configured religious screening data. Screening can consider the company’s business activities and relevant financial criteria under the selected framework.
+            {isHalal
+              ? 'A Halal classification means the security has passed the configured screening criteria for this app. The screening framework may consider the company’s business activities as well as relevant financial ratios and other applicable rules.'
+              : 'A Haram classification means the security has been identified as not meeting the configured screening criteria for this app. The classification should be driven by the selected screening framework and its underlying data.'}
           </Text>
         </View>
 
         <View className="mt-4 rounded-3xl border border-slate-200 bg-white p-5">
-          <Text className="text-base font-extrabold text-slate-900">Your {classification} experience</Text>
+          <Text className="text-lg font-extrabold text-slate-900">How {classification} stock information works</Text>
           <Text className="mt-2 text-sm leading-6 text-slate-500">
-            Use the navigation below to move between {classification} Signals, {classification} Markets and {classification} News. The selected mode is passed with those destinations so the experience remains focused on {classification} stocks.
+            {classification} mode is a filter across the stock experience. Signals should contain only {classification}-classified stocks, Markets should show only {classification}-classified securities, and News should contain only news connected to {classification}-classified stocks.
           </Text>
+        </View>
+
+        <View className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+          <View className="flex-row items-center"><Ionicons name="information-circle-outline" size={21} color={accent} /><Text style={{ color: accent }} className="ml-2 font-extrabold">Screening source</Text></View>
+          <Text className="mt-2 text-xs leading-5 text-slate-500">STOCKASTICS should display a classification only when the configured screening data source provides it. Classifications can change when company activities or financial information change.</Text>
         </View>
       </ScrollView>
 
