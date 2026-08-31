@@ -34,9 +34,8 @@ export default function ReligiousModeNav({ mode }: Props) {
             accessibilityLabel={item.label}
             onPress={() => navigate(item.key)}
             style={({ pressed }) => ({
-              width: '20%',
-              flexGrow: 0,
-              flexShrink: 0,
+              flex: 1,
+              minWidth: 0,
               alignItems: 'center',
               justifyContent: 'center',
               opacity: pressed ? 0.65 : 1,
