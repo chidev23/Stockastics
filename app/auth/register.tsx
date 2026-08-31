@@ -18,29 +18,16 @@ function GoogleLogo() {
 }
 
 export default function RegisterScreen() {
-  const handleRegister = async () => {
-    await setTestSession();
-    router.replace('/(main)/');
-  };
-
-  const handleGoogleSignup = async () => {
-    await setTestSession();
-    router.replace('/(main)/');
-  };
+  const handleRegister = async () => { await setTestSession(); router.replace('/(main)/'); };
+  const handleGoogleSignup = async () => { await setTestSession(); router.replace('/(main)/'); };
 
   return (
     <SafeAreaView className="flex-1 bg-white" edges={['top', 'bottom']}>
-      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
+      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={0}>
         <ScrollView className="flex-1" keyboardShouldPersistTaps="handled" keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'} contentContainerClassName="flex-grow px-6 py-8" automaticallyAdjustKeyboardInsets>
           <View className="flex-1 justify-center">
             <View className="mx-auto w-full max-w-[520px]">
-              <View className="items-center">
-                <View className="h-20 w-20 overflow-hidden rounded-2xl bg-black">
-                  <Image source={require('../../assets/icon.jpg')} className="h-full w-full" resizeMode="contain" accessibilityLabel="STOCKASTICS logo" />
-                </View>
-                <Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Create account</Text>
-                <Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text>
-              </View>
+              <View className="items-center"><View className="h-20 w-20 overflow-hidden rounded-2xl bg-black"><Image source={require('../../assets/icon.jpg')} className="h-full w-full" resizeMode="contain" accessibilityLabel="STOCKASTICS logo" /></View><Text className="mt-5 text-3xl font-bold tracking-tight text-slate-900">Create account</Text><Text className="mt-2 text-center text-base text-slate-500">Create your STOCKASTICS account</Text></View>
               <Pressable onPress={handleGoogleSignup} className="mt-8 h-14 flex-row items-center justify-center rounded-xl border border-slate-200 bg-white active:opacity-70"><GoogleLogo /><Text className="ml-3 text-base font-semibold text-slate-800">Sign up with Google</Text></Pressable>
               <View className="my-6 flex-row items-center"><View className="h-px flex-1 bg-slate-200" /><Text className="mx-4 text-base font-medium text-slate-500">or</Text><View className="h-px flex-1 bg-slate-200" /></View>
               <View className="gap-4"><TextInput placeholder="Full name" placeholderTextColor="#A1A1AA" autoComplete="name" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /><TextInput placeholder="Email address" placeholderTextColor="#A1A1AA" autoCapitalize="none" autoComplete="email" keyboardType="email-address" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /><TextInput placeholder="Password" placeholderTextColor="#A1A1AA" secureTextEntry autoComplete="new-password" className="h-14 rounded-xl border border-slate-200 bg-white px-4 text-base text-slate-900" /></View>
