@@ -9,7 +9,7 @@ const items: Array<{ key: SignalKey; label: string; route: string; icon: keyof t
   { key: 'retail', label: 'Retail', route: '/retail-signals', icon: 'trending-up-outline', color: '#16A34A' },
   { key: 'ipo', label: 'IPO', route: '/ipo-signals', icon: 'rocket-outline', color: '#2563EB' },
   { key: 'buyback', label: 'Buyback', route: '/buyback-signals', icon: 'repeat-outline', color: '#0F766E' },
-  { key: 'sentiment', label: 'Sentiment', route: '/sentiment-signals', icon: 'people-outline', color: '#7C3AED' },
+  { key: 'sentiment', label: 'Sent.', route: '/sentiment-signals', icon: 'people-outline', color: '#7C3AED' },
   { key: 'ex-dividend', label: 'Ex-Div', route: '/ex-dividend-signals', icon: 'cash-outline', color: '#D97706' },
   { key: 'income', label: 'Income', route: '/income-signals', icon: 'wallet-outline', color: '#0891B2' },
 ];
@@ -24,7 +24,7 @@ export default function SignalCategoryNav({ selected, religious }: Props) {
   };
 
   return (
-    <View className="mx-5 mt-5 flex-row flex-wrap justify-between">
+    <View className="mx-5 mt-5 w-auto flex-row items-stretch rounded-2xl border border-slate-200 bg-white p-1">
       {items.map((item) => {
         const active = selected === item.key;
         return (
@@ -34,20 +34,23 @@ export default function SignalCategoryNav({ selected, religious }: Props) {
             accessibilityLabel={`${item.label} signals`}
             onPress={() => open(item)}
             style={({ pressed }) => ({
-              width: '31.5%',
-              height: 62,
+              flex: 1,
+              minWidth: 0,
+              height: 60,
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: 8,
-              borderRadius: 16,
-              backgroundColor: active ? item.color : '#FFFFFF',
-              borderWidth: active ? 0 : 1,
-              borderColor: '#E2E8F0',
+              borderRadius: 13,
+              backgroundColor: active ? item.color : 'transparent',
               opacity: pressed ? 0.72 : 1,
             })}
           >
             <Ionicons name={item.icon} size={19} color={active ? '#FFFFFF' : item.color} />
-            <Text numberOfLines={1} allowFontScaling={false} style={{ marginTop: 4, fontSize: 11, lineHeight: 14, fontWeight: '800', color: active ? '#FFFFFF' : '#334155', textAlign: 'center' }}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="clip"
+              allowFontScaling={false}
+              style={{ marginTop: 4, width: '100%', paddingHorizontal: 1, fontSize: 9, lineHeight: 12, fontWeight: '800', color: active ? '#FFFFFF' : '#334155', textAlign: 'center' }}
+            >
               {item.label}
             </Text>
           </Pressable>
