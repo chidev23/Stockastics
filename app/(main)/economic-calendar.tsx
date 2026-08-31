@@ -1,3 +1,40 @@
-import { Ionicons } from '@expo/vector-icons'; import { router } from 'expo-router'; import { Pressable, ScrollView, Text, View } from 'react-native'; import { SafeAreaView } from 'react-native-safe-area-context';
-const events=[['08:30 AM','US CPI Data','Forecast 3.2% · Previous 3.1%','HIGH'],['10:00 AM','Fed Interest Rate Decision','Forecast 5.50% · Previous 5.50%','HIGH'],['02:00 PM','Nigeria GDP Report','Forecast 2.8% · Previous 2.5%','MEDIUM'],['04:30 PM','UK Manufacturing PMI','Forecast 52.3 · Previous 51.8','LOW']];
-export default function EconomicCalendar(){return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}><View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4"><Pressable onPress={()=>router.back()}><Ionicons name="arrow-back" size={24} color="#0F172A"/></Pressable><Text className="text-xl font-extrabold text-slate-900">Economic Calendar</Text><Pressable><Ionicons name="options-outline" size={21} color="#2563EB"/></Pressable></View><ScrollView contentContainerClassName="px-5 pb-8 pt-5"><View className="mb-5 flex-row items-center justify-between"><Pressable className="rounded-xl bg-white px-4 py-3"><Text className="font-bold text-slate-800">‹ Previous</Text></Pressable><Text className="font-extrabold text-slate-900">Today ▾</Text><Pressable className="rounded-xl bg-white px-4 py-3"><Text className="font-bold text-slate-800">Next ›</Text></Pressable></View><Text className="mb-3 text-lg font-extrabold text-slate-900">Upcoming Events</Text>{events.map(e=><Pressable key={e[1]} onPress={()=>alert(`${e[1]}\n${e[2]}\nImpact: ${e[3]}`)} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4"><View className="flex-row justify-between"><Text className="font-extrabold text-slate-900">{e[0]}</Text><Text className={`text-xs font-extrabold ${e[3]==='HIGH'?'text-red-600':e[3]==='MEDIUM'?'text-amber-600':'text-emerald-600'}`}>{e[3]}</Text></View><Text className="mt-2 font-bold text-slate-800">{e[1]}</Text><Text className="mt-1 text-xs text-slate-500">{e[2]}</Text></Pressable>)}<Text className="mt-3 text-center text-xs text-slate-400">Calendar data is provided for informational purposes.</Text></ScrollView></SafeAreaView>}
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import MoreBackButton from '../../src/components/MoreBackButton';
+
+const events = [
+  ['08:30 AM', 'US CPI Data', 'Forecast 3.2% · Previous 3.1%', 'HIGH'],
+  ['10:00 AM', 'Fed Interest Rate Decision', 'Forecast 5.50% · Previous 5.50%', 'HIGH'],
+  ['02:00 PM', 'Nigeria GDP Report', 'Forecast 2.8% · Previous 2.5%', 'MEDIUM'],
+  ['04:30 PM', 'UK Manufacturing PMI', 'Forecast 52.3 · Previous 51.8', 'LOW'],
+];
+
+export default function EconomicCalendar() {
+  return (
+    <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
+      <View className="flex-row items-center justify-between border-b border-slate-100 bg-white px-5 py-4">
+        <MoreBackButton />
+        <Text className="text-xl font-extrabold text-slate-900">Economic Calendar</Text>
+        <Pressable><Ionicons name="options-outline" size={21} color="#2563EB" /></Pressable>
+      </View>
+      <ScrollView contentContainerClassName="px-5 pb-8 pt-5">
+        <View className="mb-5 flex-row items-center justify-between">
+          <Pressable className="rounded-xl bg-white px-4 py-3"><Text className="font-bold text-slate-800">‹ Previous</Text></Pressable>
+          <Text className="font-extrabold text-slate-900">Today ▾</Text>
+          <Pressable className="rounded-xl bg-white px-4 py-3"><Text className="font-bold text-slate-800">Next ›</Text></Pressable>
+        </View>
+        <Text className="mb-3 text-lg font-extrabold text-slate-900">Upcoming Events</Text>
+        {events.map((e) => (
+          <Pressable key={e[1]} onPress={() => alert(`${e[1]}\n${e[2]}\nImpact: ${e[3]}`)} className="mb-3 rounded-2xl border border-slate-200 bg-white p-4">
+            <View className="flex-row justify-between"><Text className="font-extrabold text-slate-900">{e[0]}</Text><Text className={`text-xs font-extrabold ${e[3] === 'HIGH' ? 'text-red-600' : e[3] === 'MEDIUM' ? 'text-amber-600' : 'text-emerald-600'}`}>{e[3]}</Text></View>
+            <Text className="mt-2 font-bold text-slate-800">{e[1]}</Text>
+            <Text className="mt-1 text-xs text-slate-500">{e[2]}</Text>
+          </Pressable>
+        ))}
+        <Text className="mt-3 text-center text-xs text-slate-400">Calendar data is provided for informational purposes.</Text>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
