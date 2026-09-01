@@ -18,10 +18,13 @@ export default function ReligiousModeNav({ mode }: Props) {
   const insets = useSafeAreaInsets();
   const tint = mode === 'halal' ? '#16A34A' : '#DC2626';
   const navigate = (key: string) => {
-    if (key === 'home') return router.replace('/(main)/index');
-    if (key === 'more') return router.replace('/(main)/more');
-    router.replace({ pathname: `/(main)/${key}`, params: { religious: mode } });
+    // Push keeps the religious home page in the native navigation history.
+    // Therefore Android/system back from Signals, Markets, News or More can
+    // return to the correct Halal/Haram home instead of the general Home tab.
+    if (key === 'home') return router.push(`/(main)/${mode}` as never);
+    router.push({ pathname: `/(main)/${key}`, params: { religious: mode } } as never);
   };
+
   return (
     <View style={{ paddingBottom: Math.max(insets.bottom, 8) }} className="border-t border-slate-200 bg-white shadow-sm">
       <View className="h-[82px] w-full flex-row items-stretch">
