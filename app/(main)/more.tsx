@@ -33,7 +33,7 @@ export default function MoreScreen() {
 
   const goBackToReligiousHome = () => {
     if (!religious) return;
-    router.back();
+    router.replace(`/(main)/${religious}` as never);
   };
 
   return <SafeAreaView className="flex-1 bg-slate-50" edges={['top']}>
