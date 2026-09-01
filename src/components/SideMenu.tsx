@@ -11,8 +11,7 @@ const items = [
   { label: 'Customer support', icon: 'headset-outline' as const, route: '/customer-support' },
   { label: 'Legal', icon: 'shield-checkmark-outline' as const, route: '/legal' },
   { label: 'Blog and Article', icon: 'document-text-outline' as const, route: '/blog-articles' },
-  { label: 'Education', icon: 'school-outline' as const, route: '/education' },
-  { label: 'Courses', icon: 'library-outline' as const, route: '/courses' },
+  { label: 'Education and Courses', icon: 'school-outline' as const, route: '/education' },
   { label: 'Settings', icon: 'settings-outline' as const, route: '/settings' },
 ];
 
