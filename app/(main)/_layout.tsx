@@ -12,13 +12,34 @@ const PRIMARY_TABS = ['index', 'signals', 'markets', 'news', 'more'] as const;
 const PRIMARY_TAB_SET = new Set<string>(PRIMARY_TABS);
 const SIGNAL_ROUTES = new Set(['/signals','/religious-signals','/retail-signals','/ipo-signals','/buyback-signals','/sentiment-signals','/ex-dividend-signals','/income-signals']);
 
+type ReligiousMode = 'halal' | 'haram';
+
 function StockasticsTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const params = useGlobalSearchParams<{ religious?: string }>();
   const activeName = state.routes[state.index]?.name;
   if (!PRIMARY_TAB_SET.has(activeName)) return null;
-  const religiousMode = params.religious === 'halal' || params.religious === 'haram' ? params.religious : undefined;
+  const religiousMode: ReligiousMode | undefined = params.religious === 'halal' || params.religious === 'haram' ? params.religious : undefined;
   const bottomInset = Math.max(insets.bottom, 8);
+
+  const navigatePrimary = (name: string, route: any) => {
+    if (religiousMode) {
+      // Religious-mode navigation is a separate journey. Push each destination
+      // with its mode so back always remains inside the Halal/Haram experience.
+      if (name === 'index') {
+        router.push(`/(main)/${religiousMode}` as never);
+        return;
+      }
+      router.push({ pathname: `/(main)/${name}`, params: { religious: religiousMode } } as never);
+      return;
+    }
+
+    const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+    if (event.defaultPrevented) return;
+    navigation.navigate(route.name);
+  };
+
   return (
     <View style={{ width: '100%', alignSelf: 'stretch', backgroundColor: '#FFFFFF', borderTopWidth: 1, borderTopColor: '#DDE5E1', paddingBottom: bottomInset, shadowColor: '#000000', shadowOffset: { width: 0, height: -2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 10 }}>
       <View style={{ width: '100%', height: 82, flexDirection: 'row', alignItems: 'stretch', justifyContent: 'space-around' }}>
@@ -26,7 +47,7 @@ function StockasticsTabBar({ state, descriptors, navigation }: any) {
           const route = state.routes.find((item: any) => item.name === name); if (!route) return null;
           const focused = activeName === name; const baseColor = NAV_COLORS[name]; const color = focused ? baseColor : `${baseColor}B3`;
           const options = descriptors[route.key]?.options ?? {}; const label = options.tabBarLabel ?? options.title ?? LABELS[name];
-          return <Pressable key={route.key} accessibilityRole="tab" accessibilityState={{ selected: focused }} accessibilityLabel={String(label)} onPress={() => { const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true }); if (event.defaultPrevented) return; if (name === 'index' || name === 'more' || !religiousMode) navigation.navigate(route.name); else navigation.navigate(route.name, { religious: religiousMode }); }} style={({ pressed }) => ({ flex: 1, flexGrow: 1, flexBasis: 0, minWidth: 0, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 7, paddingBottom: 5, paddingHorizontal: 2, opacity: pressed ? 0.65 : 1, borderLeftWidth: index === 0 ? 0 : 1, borderLeftColor: '#EEF2F0' })}>
+          return <Pressable key={route.key} accessibilityRole="tab" accessibilityState={{ selected: focused }} accessibilityLabel={String(label)} onPress={() => navigatePrimary(name, route)} style={({ pressed }) => ({ flex: 1, flexGrow: 1, flexBasis: 0, minWidth: 0, alignItems: 'center', justifyContent: 'flex-start', paddingTop: 7, paddingBottom: 5, paddingHorizontal: 2, opacity: pressed ? 0.65 : 1, borderLeftWidth: index === 0 ? 0 : 1, borderLeftColor: '#EEF2F0' })}>
             <View style={{ width: 48, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 13, backgroundColor: focused ? `${baseColor}18` : 'transparent' }}><Ionicons name={ICONS[name]} size={25} color={color} /></View>
             <Text numberOfLines={1} allowFontScaling={false} style={{ marginTop: 4, fontSize: 12, lineHeight: 16, fontWeight: focused ? '800' : '600', color, textAlign: 'center' }}>{label}</Text>
           </Pressable>;
