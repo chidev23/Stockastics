@@ -1,18 +1,27 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Pressable } from 'react-native';
 
 /**
- * All screens opened from More use an explicit More destination instead of
- * relying on router.back(). This prevents tab history from sending users to
- * an unrelated tab such as Signals.
+ * Screens opened from More always return to More. In a religious-mode
+ * session, the More page itself retains the Halal/Haram context so the next
+ * back action can return to the correct religious home page.
  */
 export default function MoreBackButton() {
+  const params = useLocalSearchParams<{ religious?: string }>();
+  const religious = params.religious === 'halal' || params.religious === 'haram' ? params.religious : undefined;
+
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel="Back to More"
-      onPress={() => router.replace('/(main)/more')}
+      onPress={() => {
+        if (religious) {
+          router.replace({ pathname: '/(main)/more', params: { religious } });
+          return;
+        }
+        router.replace('/(main)/more');
+      }}
       className="h-10 w-10 items-center justify-center rounded-full bg-slate-50 active:bg-slate-100"
       hitSlop={8}
     >
