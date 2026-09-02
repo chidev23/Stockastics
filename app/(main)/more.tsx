@@ -3,19 +3,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+type ReligiousMode = 'halal' | 'haram';
+
 const items = [
   ['Trending Stock', 'trending-up', '/trending-stock'],
   ['Economic Calendar', 'calendar-outline', '/economic-calendar'],
   ['Community Sentiment', 'people-outline', '/community-sentiment'],
   ['Community Chat', 'chatbubbles-outline', '/community-chat'],
   ['Portfolio Register', 'briefcase-outline', '/portfolio-register'],
+  ['Customer Support', 'headset-outline', '/customer-support'],
+  ['Legal', 'shield-checkmark-outline', '/legal'],
+  ['Blog & Articles', 'document-text-outline', '/blog-articles'],
+  ['Delete Account', 'trash-outline', '/delete-account'],
   ['Company Report', 'business-outline', '/company-report'],
   ['News Analytics and Speculation', 'analytics-outline', '/news-analytics'],
   ['Behavioural Report', 'pulse-outline', '/behavioural-report'],
   ['Education and Courses', 'school-outline', '/education'],
 ] as const;
-
-type ReligiousMode = 'halal' | 'haram';
 
 export default function MoreScreen() {
   const params = useLocalSearchParams<{ religious?: string }>();
