@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View, useWindowDimensions } from 'react-native';
 
 type SignalKey = 'retail' | 'ipo' | 'buyback' | 'sentiment' | 'ex-dividend' | 'income';
 type Props = { selected?: SignalKey; religious?: 'halal' | 'haram' };
@@ -15,6 +15,8 @@ const items: Array<{ key: SignalKey; label: string; route: string; icon: keyof t
 ];
 
 export default function SignalCategoryNav({ selected, religious }: Props) {
+  const { width: screenWidth } = useWindowDimensions();
+
   const open = (item: (typeof items)[number]) => {
     if (religious) {
       router.push({ pathname: '/religious-signals', params: { religious, category: item.key } } as never);
@@ -23,14 +25,38 @@ export default function SignalCategoryNav({ selected, religious }: Props) {
     router.push(item.route as never);
   };
 
+  // Use an explicit full-width layout instead of content-sized flex children.
+  // This prevents the six categories from clustering on the left while leaving
+  // unused space on the right. No horizontal scrolling is used.
+  const horizontalMargin = 20;
+  const outerWidth = Math.max(0, screenWidth - horizontalMargin * 2);
+  const horizontalPadding = 6;
+  const gap = 3;
+  const innerWidth = Math.max(0, outerWidth - horizontalPadding * 2);
+  const itemWidth = Math.max(0, (innerWidth - gap * (items.length - 1)) / items.length);
+
   return (
     <View
-      className="mx-5 mt-5 w-auto rounded-2xl border border-slate-200 bg-white"
-      style={{ paddingHorizontal: 6, paddingVertical: 6 }}
+      style={{
+        width: outerWidth,
+        alignSelf: 'center',
+        marginTop: 20,
+        paddingHorizontal: horizontalPadding,
+        paddingVertical: 6,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
+        backgroundColor: '#FFFFFF',
+      }}
     >
       <View
-        className="w-full flex-row items-stretch"
-        style={{ columnGap: 4 }}
+        style={{
+          width: '100%',
+          flexDirection: 'row',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
+          columnGap: gap,
+        }}
       >
         {items.map((item) => {
           const active = selected === item.key;
@@ -42,10 +68,10 @@ export default function SignalCategoryNav({ selected, religious }: Props) {
               accessibilityLabel={`${item.label} signals`}
               onPress={() => open(item)}
               style={({ pressed }) => ({
-                flex: 1,
-                flexBasis: 0,
-                minWidth: 0,
+                width: itemWidth,
                 height: 68,
+                flexGrow: 0,
+                flexShrink: 0,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 13,
